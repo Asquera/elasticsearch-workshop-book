@@ -1,0 +1,5 @@
+[book]
+authors = ["Sebastian Ziebell <sebastian.ziebell@asquera.de>"]
+language = "en"
+multilingual = false
+src = "src"
