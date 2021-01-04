@@ -36,7 +36,7 @@ An alternative way to set up the environment with a single Elasticsearch Docker 
 docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.8.1
 ```
 
-this downloads, unpacks and starts the Docker image. This starts the Elasticsearch instance, forwards ports `9200` and `9300`. Once started the Elasticsearch instance is accessible at [localhost:9200](http://localhost:9200). You may need to open another shell to access it.
+this downloads, unpacks and starts the Docker image with Elasticsearch (verion `7.8.1`). This starts the Elasticsearch instance, forwards ports `9200` and `9300`. Once started the Elasticsearch instance is accessible at [localhost:9200](http://localhost:9200). You may need to open another shell to access it.
 
 
 ## VM
