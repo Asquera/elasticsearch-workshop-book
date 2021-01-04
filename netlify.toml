@@ -1,0 +1,2 @@
+[build]
+  command = "curl -L 'https://github.com/rust-lang/mdBook/releases/download/v0.4.4/mdbook-v0.4.4-x86_64-unknown-linux-gnu.tar.gz' | tar xvz && ./mdbook build"
