@@ -25,6 +25,10 @@ filters:
 
 The important property is the [filters](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filters.html) list that can take a number of `filtertypes` fields. Check the [age](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_age.html) and [pattern](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_pattern.html) filters.
 
+The `pattern` filter type allows to find indices that match the given string pattern. The `age` filter type matches the indices based on their age. The age can be specified in multiple ways, e.g. name based, creation based, etc.
+
+> Specifying multiple filter types requires that indices match all of them. In this way indices can be filtered out.
+
 
 ## Excercise
 
