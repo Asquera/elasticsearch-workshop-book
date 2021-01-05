@@ -22,7 +22,7 @@ To create a new index with a `mapping` the following command can be executed in 
 ✅ Create a new index
 
 ```bash
-curl -X PUT 'http://localhost:9200/hello_world' -d '{
+curl -H 'Content-Type: application/json' -X PUT 'http://localhost:9200/hello_world' -d '{
   "mappings": {
     "properties": {
       "title": {
@@ -75,15 +75,14 @@ each pair of lines define actions by using **newline delimited JSON** (NDJSON), 
 ## Search API
 
 Once the index is created and contains a set of indexed documents, the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html) is used to find documents that match a given query.
-
 The simplest query is a [Match All Query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html) that simply returns all documents in an index.
 
-The following command demonstrates how to search for documents in the `hello_world` index. Enter the command in your terminal:
+The following command demonstrates how to search for documents in the `hello_world` index.
 
-✅ Run the search query against the Search endpoint of index `hello_world`
+✅ Run the search query against the Search endpoint of index `hello_world` in your terminal
 
 ```bash
-curl -H 'Content-Type: application/json' -X GET http://localhost:9200/hello_world/_search -d '{
+curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/hello_world/_search?pretty' -d '{
   "query": {
     "match_all": {}
   }
@@ -94,4 +93,55 @@ This commands sends a query as JSON payload to the `/hello_world/_search` API en
 
 > **❗️** Elasticsearch accepts a JSON payload when sending a `GET` request. In case the used HTTP library or framework does not provide this capability the same request can be send via `POST`.
 
+The output of the search query looks similar to the following:
 
+```json
+{
+  "took" : 29,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 3,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "hello_world",
+        "_type" : "_doc",
+        "_id" : "021L03YBpqOAGplM8qYe",
+        "_score" : 1.0,
+        "_source" : {
+          "title" : "elasticsearch"
+        }
+      },
+      {
+        "_index" : "hello_world",
+        "_type" : "_doc",
+        "_id" : "1G1L03YBpqOAGplM8qYi",
+        "_score" : 1.0,
+        "_source" : {
+          "title" : "mappings are great"
+        }
+      },
+      {
+        "_index" : "hello_world",
+        "_type" : "_doc",
+        "_id" : "1W1L03YBpqOAGplM8qYi",
+        "_score" : 1.0,
+        "_source" : {
+          "title" : "hello world"
+        }
+      }
+    ]
+  }
+}
+```
+
+The JSON response contains some meta information, such as how long the query took, how many shards were requested. The `hits` block contains number of matched documents and the list of documents.
