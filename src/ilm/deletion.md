@@ -1,6 +1,6 @@
 # Index Deletion
 
-One common task in a log-based Elasticsearch infrastructure is to keep logs for a certain amount of time, e.g. 30 days. The Curator can be used to automatically delete older indices.
+One common task in a log-based Elasticsearch infrastructure is to keep logs for a certain amount of time, e.g. 30 days. The Curator can be used to automatically delete older indices. 
 
 > **❗️** in case the XPack functionality is available, check out the [index lifecycle management](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management.html) documentation of Elasticsearch on how to use index lifecycle policies.
 
@@ -11,7 +11,7 @@ Set up the `config.yml` to communicate with the Elasticsearch cluster. Check the
 
 ## Action
 
-The Curator provides a [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action to indices. The basic structure of this action is:
+The Curator provides a [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action to delete indices. The basic structure of this action is:
 
 ```yaml
 action: delete_indices
@@ -25,7 +25,7 @@ filters:
 
 The important property is the [filters](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filters.html) list that can take a number of `filtertypes` fields. Check the [age](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_age.html) and [pattern](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_pattern.html) filters.
 
-The `pattern` filter type allows to find indices that match the given string pattern. The `age` filter type matches the indices based on their age. The age can be specified in multiple ways, e.g. name based, creation based, etc.
+The `pattern` filter type allows to find indices that match the given string pattern, e.g. `logstash-`. The `age` filter type matches the indices based on their age. The age can be specified in multiple ways, e.g. name based, creation based, etc.
 
 > Specifying multiple filter types requires that indices match all of them. In this way indices can be filtered out.
 
@@ -35,7 +35,7 @@ The `pattern` filter type allows to find indices that match the given string pat
 Follow these steps to run the excercise
 
 * ✅ start Elasticsearch
-* ✅ create at least 3 daily indices with a date based suffix, e.g. `logstash-2021.01.05`, `logstash-2021.01.04`, etc., please choose current days
+* ✅ create at least 3 daily indices with a date based suffix, e.g. `logstash-2021.01.05`, `logstash-2021.01.04`, etc., in order to see the effect it's recommended to use current dates
 * ✅ create a `config.yml` (see [Configuration section](curator.html#configuration))
 * ✅ create a `action.yml` that uses the [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action, to delete indices older than 2 days
 * ✅ run `curator` command line tool with `--dry-mode`, check the output for actions
