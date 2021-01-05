@@ -37,7 +37,7 @@ Follow these steps to run the excercise
 * ✅ start Elasticsearch
 * ✅ create at least 3 daily indices with a date based suffix, e.g. `logstash-2021.01.05`, `logstash-2021.01.04`, etc., in order to see the effect it's recommended to use current dates
 * ✅ create a `config.yml` (see [Configuration section](curator.html#configuration))
-* ✅ create a `action.yml` that uses the [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action, to delete indices older than 2 days
+* ✅ create a `action.yml` that uses the [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action to delete indices older than `2` days
 * ✅ run `curator` command line tool with `--dry-mode`, check the output for actions
 * ✅ run `curator` command to delete older indices
 
@@ -51,7 +51,7 @@ When successful, there should only be two indices starting with the same suffix,
 Here is a version of the `action.yml`.
 
 <details>
-<summary>Solution</summary>
+<summary>Click Me</summary>
 
 ```yaml
 # delete_indices.yml
