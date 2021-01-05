@@ -4,9 +4,10 @@
   - [Setup](./introduction/setup.md)
   - [Tools](./introduction/tools.md)
 --------------------------------------------------------------------------
-- [Search](./queries/README.md)
 - [Analysis](./analysis/README.md)
   - [Useful APIs](./analysis/apis.md)
+- [Search](./queries/README.md)
+  - [Match Query](./queries/match.md.md)
 --------------------------------------------------------------------------
 - [Index Lifecycle Management](./ilm/README.md)
   - [Elasticsearch Curator](./ilm/curator.md)
