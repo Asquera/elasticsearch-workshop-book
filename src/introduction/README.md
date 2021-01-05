@@ -5,7 +5,7 @@ A book with examples / exercises on how to use [Elasticsearch](https://www.elast
 
 ## Who is this book for?
 
-This book is companion material for Elasticsearch workshops and trainings. It requires some basic knowledge of Elasticsearch, how to run commands in a shell.
+This book is companion material for Elasticsearch workshops and trainings. It requires some basic knowledge of Elasticsearch and how to run commands in a shell.
 
 
 ## Icons and Formatting
@@ -22,7 +22,7 @@ Exercises may provide a collapsable solution
 
 <details>
 <summary>Click Me</summary>
-A solution can show the content of a file, e.g. `yaml`
+A solution can show the content of a file, e.g. <code>yaml</code>
 
 ```yaml
 ---
