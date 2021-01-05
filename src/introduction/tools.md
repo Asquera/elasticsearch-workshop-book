@@ -38,7 +38,7 @@ it should output name, version and some details, similar to the following output
 
 ## Graphical clients
 
-All communication is done via HTTP therefore any graphical client can be used as well. The following tools provide a graphical interface, allow to store previous queries etc.
+All communication is done via HTTP therefore any HTTP / REST client can be used as well. The following tools provide a graphical interface, to organize / store previous queries etc.
 
 * [Postman App](https://www.postman.com/downloads/) - fully fledged API platform client
 * [Insomnia](https://insomnia.rest/) - a REST client
@@ -47,3 +47,11 @@ All communication is done via HTTP therefore any graphical client can be used as
 ## Cerebro
 
 Another useful tool to check the state of Elasticsearch is [Cerebro](https://github.com/lmenezes/cerebro) (the successor to **head** and **kopf**). It provides a web interface to see the cluster state, Elasticsearch instances, indexes. It also provides some basic management capabilities, for example to set aliases, create / restore snapshots. One of the views is a basic query interface.
+
+The repository [Asquera/elasticsearch-docker](https://github.com/Asquera/elasticsearch-docker) also contains a Cerebro container to start. In case you have checked out the repository and are using the setup with **Docker** and **Docker-Compose** Cerebro can be started with:
+
+```bash
+docker-compose up --build --detach cerebro
+```
+
+Once started Cerebro open your browser to access it at URL [localhost:9000](http://localhost:9000).

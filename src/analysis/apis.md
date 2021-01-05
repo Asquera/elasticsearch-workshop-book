@@ -1,4 +1,4 @@
-# Analysis API endpoints
+# API endpoints
 
 There are a number of API endpoints Elasticsearch provides to set up index mappings, test analyzers or explain queries. Here is a list of useful API endpoints that are helpful when creating your own index mappings with analyzers.
 
@@ -8,7 +8,7 @@ These APIs assume there is an Elasticsearch instance running at [localhost:9200]
 
 The [Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html) can be used to test how Elasticsearch (or Lucene) analyzes text strings into tokens.
 
-For example to test the output of the `standard` analyzer via **curl** use:
+For example to test the output of the `standard` analyzer via **curl** the general `/_analyze` endpoint can be used.
 
 ```bash
 curl -X GET "localhost:9200/_analyze?pretty" -H 'Content-Type: application/json' -d '{
