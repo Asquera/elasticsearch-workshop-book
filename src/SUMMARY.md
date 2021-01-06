@@ -13,7 +13,7 @@
     - [Term Query](./queries/queries/term.md)
     - [Bool Query](./queries/queries/bool.md)
     - [Query String](./queries/queries/query_string.md)
-    - [Geo Point](./queries/queries/geo_point.md.md)
+    - [Geo Point](./queries/queries/geo_point.md)
   - [Suggestions](./queries/suggestions/README.md)
     - [Completion](./queries/suggestions/completion.md)
     - [Did You Mean](./queries/suggestions/did_you_mean.md)

@@ -55,7 +55,7 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/matc
 
 This adds a number of different documents with movie titles to the index.
 
-The basic structure of a match query is
+The basic structure of a **match** query is
 
 ```json
 {
@@ -69,7 +69,7 @@ The basic structure of a match query is
 }
 ```
 
-where `<field>` is the field to search in (e.g. `title`) and the `<search-term>` is the term to search for.
+where `<field>` is the name of the field to search in (e.g. `title`) and the `<search-term>` is the term to search for.
 See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html).
 
 The Search API endpoint for index `match_test` is available at `http://localhost:9200/match_test/_search`. To search for documents send a `GET` request with the query as JSON payload to this endpoint.
@@ -134,3 +134,24 @@ curl -X POST 'http://localhost:9200/match_test/_search?pretty' -H 'Content-Type:
 ✅ Write a query that includes the [fuzziness](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query-fuzziness) property and search for `incredible`.
 
 > **🔎** Check the results, are they what you would expect?
+
+<details>
+<summary>Possible solution</summary>
+
+Using `fuzziness` with value `AUTO` allows a difference between search term and matched term.
+
+```bash
+curl -X POST 'http://localhost:9200/match_test/_search?pretty' -H 'Content-Type: application/json' -d '{
+  "query": {
+    "match": {
+      "title": {
+        "query": "incredible",
+        "fuzziness": "AUTO"
+      }
+    }
+  }
+}'
+```
+
+The `fuzziness` setting is useful to match documents where the search term contains a typo or a transposition.
+</details>

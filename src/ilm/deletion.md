@@ -43,7 +43,7 @@ Follow these steps to run the excercise
 
 When successful, there should only be two indices starting with the same suffix, e.g. `logstash-*`, older indices should have been deleted.
 
-> **🔎** depending on your chosen values in the **age** filter type no indices may have been deleted. What is a difference between `source: creation_date` and `source: timestring`?
+> **🔎** depending on your chosen values in the **age** filter type no indices may have been deleted. What is the difference between `source: creation_date` and `source: timestring`?
 
 
 ## Solution
