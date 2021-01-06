@@ -30,7 +30,7 @@ The `pattern` filter type allows to find indices that match the given string pat
 > Specifying multiple filter types requires that indices match all of them. In this way indices can be filtered out.
 
 
-## Excercise
+## Exercise
 
 Follow these steps to run the excercise
 
