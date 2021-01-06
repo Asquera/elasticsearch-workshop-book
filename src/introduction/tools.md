@@ -7,7 +7,7 @@ Elasticsearch offers its functionality via API endpoints over HTTP. Therefore an
 
 The most common way to communicate with Elasticsearch is using the command line tool [curl](https://curl.se/). The examples in the official Elasticsearch documentation provide curl commands to copy.
 
-For example to check that Elasticsearch is running at [localhost:9200](http://localhost:9200) use the following command in your terminal:
+✅ Check that Elasticsearch is accessible at [localhost:9200](http://localhost:9200)
 
 ```bash
 curl localhost:9200
@@ -49,6 +49,8 @@ All communication is done via HTTP therefore any HTTP / REST client can be used 
 Another useful tool to check the state of Elasticsearch is [Cerebro](https://github.com/lmenezes/cerebro) (the successor to **head** and **kopf**). It provides a web interface to see the cluster state, Elasticsearch instances, indexes. It also provides some basic management capabilities, for example to set aliases, create / restore snapshots. One of the views is a basic query interface.
 
 The repository [Asquera/elasticsearch-docker](https://github.com/Asquera/elasticsearch-docker) also contains a Cerebro container to start. In case you have checked out the repository and are using the setup with **Docker** and **Docker-Compose** Cerebro can be started with:
+
+✅ Start Cerebro in a separate shell alongside Elasticsearch
 
 ```bash
 docker-compose up --build --detach cerebro
