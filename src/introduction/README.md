@@ -7,6 +7,8 @@ A book with examples / exercises on how to use [Elasticsearch](https://www.elast
 
 This book is companion material for Elasticsearch workshops and trainings. It requires some basic knowledge of Elasticsearch and how to run commands in a shell.
 
+> **💡** Tip: You can search through this book by clicking on the 🔍 icon at the top of the page or by pressing the `s` key.
+
 
 ## Icons and Formatting
 

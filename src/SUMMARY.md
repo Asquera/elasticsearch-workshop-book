@@ -23,6 +23,7 @@
     - [Terms](./queries/aggregations/terms_aggs.md)
     - [Filter](./queries/aggregations/filter_aggs.md)
     - [Nested](./queries/aggregations/nested_aggs.md)
+  - [Pagination](./queries/pagination.md)
 --------------------------------------------------------------------------
 - [Index Lifecycle Management](./ilm/README.md)
   - [Elasticsearch Curator](./ilm/curator.md)
