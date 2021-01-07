@@ -15,4 +15,4 @@ For the more common search queries a number of exercises can be found in this ch
 * [Multi Match](./multi_match.md)
 * [Bool](./bool.md)
 * [Simple Query String](./query_string.md)
-* [Geo Point](./geo_point.md)
+* [Geo Shape Queries](./geo_shape.md)
