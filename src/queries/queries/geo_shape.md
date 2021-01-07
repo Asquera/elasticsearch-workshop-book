@@ -73,7 +73,7 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/geo_
 {"index":{"_index":"geo_test"}}
 {"title": "19grams", "position": "52.5331751,13.3779764", "review": [5, 3, 2]}
 {"index":{"_index":"geo_test"}}
-{"title": "Yumcha Heroes", "position": "52.5311998,13.4005831", "review": [5, 3, 4]}
+{"title": "House of Small Wonder", "position": "52.5259146,13.3716512", "review": [5, 3, 4]}
 '
 ```
 
@@ -85,6 +85,7 @@ To give some ideas, here are some landmarks in Berlin as reference points:
 * Brandenburger Tor - `52.5156952,13.377515`
 * Park am Nordbahnhof - `52.5331779,13.3821109`
 * Museum Island - `52.5168903,13.3977636`
+* Mauerpark - `52.5254297,13.3985084`
 * Berlin Fernsehturm (tv tower) - `52.5208274,13.4072431`
 
 ✅ Write a **geo_distance** query that finds all documents in 3 kilometers distance of the Fernsehturm
@@ -115,4 +116,62 @@ curl -X POST 'http://localhost:9200/geo_test/_search?pretty' -H 'Content-Type: a
 
 > What happens when you use a different reference / central point or change the distance?
 
-✅ Write a **geo_bounding_box** query that finds all documents within a rectangle
+✅ Write a **geo_bounding_box** query that finds all documents within a rectangle or polygon
+
+> The value input for the `geo_bounding_box` is specified by two pairs, the `top`, `left` and `bottom`, `right` coordinates. You can check the
+> `position` values of the documents to find some useful values.
+> A `geo_polygon` consists of a list of points that shape the polygon. At least 3 coordinate pairs have to be given.
+
+<details>
+<summary>Solution using geo bounding box</summary>
+
+Find all restaurants in a bounding box using coordinates of Park Am Nordbahnhof and Berlin Fernsehturm.
+
+```bash
+curl -X POST 'http://localhost:9200/geo_test/_search?pretty' -H 'Content-Type: application/json' -d '{
+  "query": {
+    "bool": {
+      "filter": {
+        "geo_bounding_box": {
+          "position": {
+            "top_left": "52.5331779,13.4072431",
+            "bottom_right": "52.5208274,13.3821109"
+          }
+        }
+      }
+    }
+  }
+}'
+```
+</details>
+
+> This may require to specify the bounding box coordinates differently from the given coordinates. Find min & max longitude and latitude values and fill them in accordingly.
+
+<details>
+<summary>Solution using geo polygon</summary>
+
+Find all restaurants within the polygon using coordinates from the land marks.
+
+```bash
+curl -X POST 'http://localhost:9200/geo_test/_search?pretty' -H 'Content-Type: application/json' -d '{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_polygon": {
+          "position": {
+            "points": [
+              "52.5331779,13.3821109",
+              "52.5208274,13.4072431",
+              "52.5156952,13.377515"
+            ]
+          }
+        }
+      }
+    }
+  }
+}'
+```
+</details>
