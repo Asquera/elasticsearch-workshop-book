@@ -51,6 +51,90 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/term
 {"index":{"_index":"term_test"}}
 {"id": "5", "count": 42, "published_at": "2020-03-05"}
 {"index":{"_index":"term_test"}}
-{"id": "6", "count": 50, "published_at": "2020-06-13"}
+{"id": "6", "count": 20, "published_at": "2020-12-01"}
 '
 ```
+
+This adds a number of documents with the specified fields to the index.
+
+The basic structure of a **term** query is
+
+```json
+{
+  "query": {
+    "term": {
+      "id": {
+        "value": "1"
+      }
+    }
+  }
+}
+```
+
+The field to search in is the `id` field, the search term to search for is `"1"`.
+See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html) for more details.
+
+The Search API endpoint for index `term_test` is available at `http://localhost:9200/term_test/_search`.
+
+
+## Exercise
+
+Build a **term** query to find documents.
+
+✅ Write a query to find documents with id `5`
+
+<details>
+<summary>Possible solution</summary>
+
+```bash
+curl -X POST 'http://localhost:9200/term_test/_search?pretty' -H 'Content-Type: application/json' -d '{
+  "query": {
+    "term": {
+      "id": {
+        "value": "5"
+      }
+    }
+  }
+}'
+```
+</details>
+
+✅ Write a query to find documents with published date `2020-12-01`
+
+<details>
+<summary>Possible solution</summary>
+
+```bash
+curl -X POST 'http://localhost:9200/term_test/_search?pretty' -H 'Content-Type: application/json' -d '{
+  "query": {
+    "term": {
+      "published_at": {
+        "value": "2020-12-01"
+      }
+    }
+  }
+}'
+```
+</details>
+
+> There is a `terms` query that is similar to `term` that returns documents with one or more **exact** matches.
+
+See the [Elasticsearch documentation on terms query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html).
+
+✅ Write a **terms** query to find documents with counts `10` and `20`
+
+<details>
+<summary>Possible solution</summary>
+
+```bash
+curl -X POST 'http://localhost:9200/term_test/_search?pretty' -H 'Content-Type: application/json' -d '{
+  "query": {
+    "terms": {
+      "count": ["10", "20"]
+    }
+  }
+}'
+```
+</details>
+
+> How would query documents that have `count` with value `10` and `published_date` set to `2020-12-01`?
