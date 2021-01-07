@@ -2,7 +2,7 @@
 
 One of the [term-level queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/term-level-queries.html) is the [term query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html). This query type returns document that **exactly** match a term in a provided field.
 
-> A term query is not necessarily applicable to `text` based fields. Analyzers store modified terms of the text. This may result in different matches.
+> A term query is not necessarily applicable to `text` based fields. Analyzers store modified terms of the text. This may result in different or unexpected matches.
 
 
 ## Index Mapping

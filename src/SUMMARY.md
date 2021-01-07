@@ -12,7 +12,7 @@
     - [Match Query](./queries/queries/match.md)
     - [Multi Match Query](./queries/queries/multi_match.md)
     - [Bool Query](./queries/queries/bool.md)
-    - [Query String](./queries/queries/query_string.md)
+    - [Simple Query String](./queries/queries/query_string.md)
     - [Geo Point](./queries/queries/geo_point.md)
   - [Suggestions](./queries/suggestions/README.md)
     - [Completion](./queries/suggestions/completion.md)

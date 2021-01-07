@@ -27,7 +27,12 @@ curl -X PUT 'http://localhost:9200/match_test' -H 'Content-Type: application/jso
 }'
 ```
 
-This defines a mapping with two properties, `title` and `tags`. The former has field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html), the latter has the [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html) type. The **text** type also sets the [standard](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html) analyzer. The text input for the `title` field is analyzed using this analyzer. It ensures the indexed terms and the given query terms are analyzed the same way. Otherwise they would not necessarily match or may match different terms.
+This defines a mapping with the following fields:#
+
+* `title` has field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html)
+* `tags` has field type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html)
+
+The **text** type also sets the [standard](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html) analyzer. The text input for the `title` field is analyzed using this analyzer. It ensures the indexed terms and the given query terms are analyzed the same way. Otherwise they would not necessarily match or may match different terms.
 
 
 ## Add Documents

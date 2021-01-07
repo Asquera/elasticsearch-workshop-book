@@ -10,9 +10,9 @@ There is an extensive list of query types, see [Elasticsearch documentation](htt
 
 For the more common search queries a number of exercises can be found in this chapter
 
-* [Term](./term.md)
+* [Term & Terms](./term.md)
 * [Match](./match.md)
 * [Multi Match](./multi_match.md)
 * [Bool](./bool.md)
-* [Query String](./query_string.md)
+* [Simple Query String](./query_string.md)
 * [Geo Point](./geo_point.md)
