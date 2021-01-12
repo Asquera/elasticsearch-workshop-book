@@ -35,6 +35,11 @@ curl -X PUT 'http://localhost:9200/test_terms_aggs' -H 'Content-Type: applicatio
 }'
 ```
 
+This defines a mapping with the following fields:
+
+* `title` using the field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html) with the `standard` analyzer.
+* `genre` and `tags` using field type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html)
+
 
 ## Add Documents
 

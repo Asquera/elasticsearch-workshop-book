@@ -4,6 +4,7 @@ This chapter describes the different query types used in search, completion, sug
 
 ✅ Start Elasticsearch instance (see [Setup](./../introduction/setup.md))
 
+
 ## Examples
 
 There is an extensive list of query types, see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).

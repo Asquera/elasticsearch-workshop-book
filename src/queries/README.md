@@ -26,6 +26,13 @@ Each particular query generates its own range of scores that depends on a number
 > **🔎** For more information on scoring, see the [Elasticsearch Guide on Scoring](https://www.elastic.co/guide/en/elasticsearch/guide/2.x/scoring-theory.html).
 
 
-Useful Resources:
+> The **query context** in a query tries to answer question *How well does a document match this query clause*? For these queries the relevance score is calcualted.
 
+> The **filter context** in a query answers the question *Does this document match this query clause*? It's a binary decision, either the document matches or not. For these filters no score is calculated or a default value of `1.0` is automatically applied.
+
+
+## Useful Resources:
+
+* [Query And Filter Context](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html) - Elasticsearch documentation
 * [How Scoring Works In Elasticsearch](https://www.compose.com/articles/how-scoring-works-in-elasticsearch/)
+
