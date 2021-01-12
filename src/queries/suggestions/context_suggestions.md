@@ -5,7 +5,7 @@ It is a context based suggester that can be used to filter and/or boost suggesti
 
 For example assume you want to suggest movies boosted by certain genres. In order to provide context based suggestions the `completion` field in the mapping is expanded with `contexts` information.
 
-> It's mandatory to provide a context when indexing / querying a context enabled completion field.
+> It's **mandatory** to provide a context when indexing / querying a context enabled completion field.
 
 
 ## Index Mapping
@@ -72,9 +72,13 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/cont
 {"index":{"_index":"context_suggestions"}}
 {"title": "Star Wars A New Hope", "genre": "space action", "year": 1977}
 {"index":{"_index":"context_suggestions"}}
+{"title": "Stargate", "genre": "scifi", "year": 1994}
+{"index":{"_index":"context_suggestions"}}
 {"title": "Spiderman Homecoming", "genre": "superhero", "year": 2017}
 {"index":{"_index":"context_suggestions"}}
 {"title": "Spiderman Far From Home", "genre": "superhero", "year": 2019}
+{"index":{"_index":"context_suggestions"}}
+{"title": "Spiderman Into the Spiderverse", "genre": "animation", "year": 2018}
 {"index":{"_index":"context_suggestions"}}
 {"title": "Rogue One: A Star Wars Story", "genre": "space action", "year": 2016}
 {"index":{"_index":"context_suggestions"}}
@@ -83,8 +87,6 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/cont
 {"title": "Star Trek Into Darkness", "genre": "action", "year": 2013}
 {"index":{"_index":"context_suggestions"}}
 {"title": "Third Star", "genre": "drama", "year": 2010}
-{"index":{"_index":"context_suggestions"}}
-{"title": "Lego Star Wars", "genre": "kids", "year": 2016}
 {"index":{"_index":"context_suggestions"}}
 {"title": "The Star Witness", "genre": "drama", "year": 1931}
 '
@@ -104,17 +106,37 @@ curl -X POST 'http://localhost:9200/context_suggestions/_search?pretty' -H 'Cont
       "completion": {
         "field": "title.completion",
         "contexts": {
-          "genre": ["kids"]
+          "genre": ["action"]
         }
       }
-    },
-    "context_completion_all": {
+    }
+  }
+}'
+```
+
+> Remember the `completion` field type indexes input text for a prefix based search, the text in `title` has to start with the given search term.
+
+A context in the `contexts` field also supports boost factors. This provides a mean to rank values for a context differently. See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html) on context suggesters.
+
+✅ Build a query that searches for *"spider"* in genres `superhero` and `animation`, that boosts `animation` by a factor of `2.0`. Return the top 2 entries of this search.
+
+<details>
+<summary>Possible solution</summary>
+
+Similar to the previous query there are now entries in the `contexts` field for `genre`. The entry for genre `animation` defines a boost factor of `2.0` which ranks these matches higher.
+
+```bash
+curl -X POST 'http://localhost:9200/context_suggestions/_search?pretty' -H 'Content-Type: application/json' -d '{
+  "suggest": {
+    "text": "spider",
+    "context_completion_genre": {
       "completion": {
         "field": "title.completion",
+        "size": 2,
         "contexts": {
           "genre": [
-            { "context": "biopic", "boost": 5.0 },
-            { "context": "drama", "boost": 2.0 }
+            { "context": "superhero" },
+            { "context": "animation", "boost": 2.0 }
           ]
         }
       }
@@ -123,8 +145,4 @@ curl -X POST 'http://localhost:9200/context_suggestions/_search?pretty' -H 'Cont
 }'
 ```
 
-
-
-
-
-
+</details>
