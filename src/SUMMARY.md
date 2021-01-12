@@ -23,6 +23,8 @@
     - [Terms](./queries/aggregations/terms_aggs.md)
     - [Filter](./queries/aggregations/filter_aggs.md)
     - [Nested](./queries/aggregations/nested_aggs.md)
+    - [Stats](./queries/aggregations/stats_aggs.md)
+    - [Percentiles](./queries/aggregations/percentiles_aggs.md)
   - [Pagination](./queries/pagination.md)
 --------------------------------------------------------------------------
 - [Index Lifecycle Management](./ilm/README.md)
