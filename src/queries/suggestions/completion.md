@@ -1,9 +1,6 @@
 # Completion Suggest
 
-> **🚧** This section holds preliminary instructions and is not complete.
-
-Elasticsearch provides a few specific data types to support suggesters. One of the newer field types is the `completion` type.
-Typically document fields that contain text for which the auto complete feature should be used, are good candidates for this type.
+Elasticsearch provides a few specific data types to support suggesters. One of the newer field types is the `completion` type. Typically document fields that contain text for which the auto complete feature should be used, are good candidates for this type.
 See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html#completion-suggester).
 
 In earlier versions of Elasticsearch a custom text `analyzer` was used to implement the auto complete feature. This is still available.

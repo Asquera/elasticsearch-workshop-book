@@ -18,7 +18,7 @@
     - [Completion](./queries/suggestions/completion.md)
     - [Did You Mean](./queries/suggestions/did_you_mean.md)
     - [Search As You Type](./queries/suggestions/search_as_you_type.md)
-    - [Context Suggest](./queries/suggestions/context_suggestions.md)
+    - [Context Suggestions](./queries/suggestions/context_suggestions.md)
   - [Aggregations](./queries/aggregations/README.md)
     - [Terms](./queries/aggregations/terms_aggs.md)
     - [Filter](./queries/aggregations/filter_aggs.md)

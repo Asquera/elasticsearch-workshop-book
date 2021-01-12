@@ -5,7 +5,7 @@ There are a number of special search queries to help users navigate the document
 * [Completion](./completion.md) - using `completion` field type & `ngram` based analyzer
 * [Search As You Type](./search_as_you_type.md) - using `search_as_you_type` field type & custom `analyzer`
 * [Did You Mean Suggest](./did_you_mean.md) - using `suggest` query
-* [Context Suggester](./context_suggestions.md) - using `completion` field type with context information
+* [Context Suggestions](./context_suggestions.md) - using `completion` field type with context information
 
 
 ## Resources

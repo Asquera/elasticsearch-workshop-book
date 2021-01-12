@@ -38,7 +38,7 @@ This mapping defines the following fields.
 * `title.text` with field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html)
 * `genre` with field type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html)
 
-> **❗️** Using the field `search_as_you_type` may generate a lot of indexed terms, depending on the length of the text in the document, therefore it's recommended to apply to only those fields which profit the most from an auto completion, e.g. `keyword`, `genre`, `title`, `tag`.
+> **❗️** Using the field type `search_as_you_type` may generate a lot of indexed terms, depending on the length of the text in the document, therefore it's recommended to apply this type to only those fields which profit the most from an auto completion, e.g. `keyword`, `genre`, `title`, `tag`. Avoid longer text fields, e.g. `body`, `description`.
 
 
 ### 🔎 Explanation
@@ -218,4 +218,4 @@ curl -X POST 'http://localhost:9200/search_as_you_type/_search?pretty' -H 'Conte
 
 ✅ Use the same query to search for `star w`
 
-* Are the results what you would expect?
+Are the results what you would expect?
