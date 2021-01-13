@@ -33,3 +33,6 @@
   - [Hot Warm Setup](./ilm/hot_warm_setup.md)
   - [Rollover](./ilm/rollover.md)
   - [Snapshot](./ilm/snapshot.md)
+--------------------------------------------------------------------------
+- [ELK / Elastic Stack](./elk/README.md)
+  - [Logstash](./elk/logstash.md)
