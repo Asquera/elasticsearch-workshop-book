@@ -63,7 +63,9 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 
 This query will return all documents were any entry of `opening_hours.day` contains `monday` and `opening_hours.time` contains the value `10-18`, but the specific combination is not expressed, the `term` queries are not related to the nested document structure. Therefore the response contains all documents were fields hold these values.
 
-The `nested` field type groups these properties as inner documents, Elasticsearch indexes these inner documents separately. Once the index mapping makes use of the `nested` field a search request can be more precise by using a `nested` sub query.
+> **🔎** The `nested` field type groups properties as inner documents. Elastiscearch indexes the documents separately.
+
+Once the index mapping makes use of the `nested` field te search request can be more precise by using a `nested` sub query.
 
 <details>
 <summary>Check the updated index mapping</summary>
@@ -213,40 +215,32 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 
 ✅ Build a `nested` query to find all restaurants that are open on a `monday` and list the available opening hours.
 
+> Elasticsearch provides support to return *inner hits* (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/inner-hits.html)).
+
 <details>
 <summary>Possible solution</summary>
 
-This solution uses a bool based query with a `filter` clause to find all documents, then using a `terms` aggregation to group all restaurants by opening hours.
+This query below uses a `nested` aggregation with an inner `filter` aggregation to find all documents that have `opening_hours.day` set to `monday`, groups all hits using a `terms` aggregation. The result is opening hours of all open restaurants on Mondays.
 
 ```bash
 curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_aggs/_search?pretty' -d '{
   "size": 0,
-  "query": {
-    "nested": {
-      "path": "opening_hours",
-      "query": {
-        "bool": {
+  "aggs": {
+    "restaurants": {
+      "nested": {
+        "path": "opening_hours"
+      },
+      "aggs": {
+        "monday": {
           "filter": {
             "term": {
-              "opening_hours.day": {
-                "value": "monday"
-              }
+              "opening_hours.day": "monday"
             }
-          }
-        }
-      }
-    }
-  },
-  "aggs": {
-    "open mondays": {
-      "nested": { "path": "opening_hours" },
-      "aggs": {
-        "by hours": {
-          "filter": { "term": { "opening_hours.day": "monday" } },
+          },
           "aggs": {
-            "by hours": {
+            "open hours": {
               "terms": {
-                "field": "opening.time"
+                "field": "opening_hours.time"
               }
             }
           }
