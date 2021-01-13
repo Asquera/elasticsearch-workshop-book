@@ -168,7 +168,7 @@ Now that we have an index with a `nested` type, let's add a few documents.
 ```bash
 curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/nested_aggs/_bulk' -d '
 {"index":{"_index":"nested_aggs"}}
-{"title":"Restaurant at the end of the universe", "opening_hours":[{"day":"monday","time":"10-18"},{"day":"wednesday","time":"10-18"}, {"day":"friday","time":"10-18"}]}
+{"title":"Restaurant at the end of the universe", "opening_hours":[{"day":"monday","time":"10-18"},{"day":"wednesday","time":"10-15"}, {"day":"friday","time":"10-15"}]}
 {"index":{"_index":"nested_aggs"}}
 {"title":"Djimalaya", "opening_hours":[{"day":"monday","time": "10-18"}, {"day":"wednesday","time":"10-18"}, {"day":"friday","time":"10-18"}]}
 {"index":{"_index":"nested_aggs"}}
@@ -181,11 +181,11 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/nest
 
 ## Exercise
 
-A nested aggregation is a bucket aggregation that calculates / summarizes data over nested documents.
+A nested aggregation is a bucket aggregation that calculates / summarizes data on nested documents.
 It works on nested fields and requires a `path` to the nested object. See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-nested-aggregation.html) on nested aggregations for more details.
 The `nested` path tells Elasticsearch where the inner documents reside.
 
-✅ Build a `nested` aggregation to group / count all restaurants by `opening_hours.day`.
+✅ Build a `nested` aggregation to group / count all restaurants by their `opening_hours.day`.
 
 <details>
 <summary>Possible solution</summary>
@@ -197,9 +197,7 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
   "size": 0,
   "aggs": {
     "open restaurants": {
-      "nested": {
-        "path": "opening_hours"
-      },
+      "nested": { "path": "opening_hours" },
       "aggs": {
         "by day": {
           "terms": {
@@ -213,9 +211,9 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 ```
 </details>
 
-✅ Build a `nested` query to find all restaurants that are open on a `monday` and list the available opening hours.
+✅ Build a `nested` aggregation to find all restaurants that are open on a `monday` and group the available opening hours for these restaurants.
 
-> Elasticsearch provides support to return *inner hits* (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/inner-hits.html)).
+> Building this aggregation combines a few aggregations. Instead of using `query` block it is recommended to use a `nested` aggregation with an inner `filter` aggregation. The main difference between the `query` block and the aggregations is that the query block returns the full documents, while the `filter` aggregation can be used to work on the inner `opening_hours` entries.
 
 <details>
 <summary>Possible solution</summary>
@@ -251,3 +249,5 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 }'
 ```
 </details>
+
+Do you see the results you would expect?
