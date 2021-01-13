@@ -132,7 +132,6 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/test
 
 ✅ Build an equivalent query that uses a `filter` aggregation instead of the `query` block from the search reqest above.
 
-
 <details>
 <summary>Possible solution</summary>
 

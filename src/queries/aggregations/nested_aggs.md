@@ -172,7 +172,7 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/nest
 {"index":{"_index":"nested_aggs"}}
 {"title":"Kebap", "opening_hours":[{"day":"sunday","time": "10-14"}]}
 {"index":{"_index":"nested_aggs"}}
-{"title":"Curry 36", "opening_hours":[{"day":"monday","time": "10-22"},{"day":"tuesday","time": "10-18"},{"day":"thursday","time": "10-18"}]}
+{"title":"Curry 36", "opening_hours":[{"day":"monday","time": "10-22"},{"day":"tuesday","time": "10-14"},{"day":"thursday","time": "10-18"}]}
 '
 ```
 
@@ -211,7 +211,7 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 ```
 </details>
 
-✅ Build a `nested` query to find all restaurants that are open on a `monday` and group / count them by the opening hours.
+✅ Build a `nested` query to find all restaurants that are open on a `monday` and list the available opening hours.
 
 <details>
 <summary>Possible solution</summary>
@@ -239,13 +239,16 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
   },
   "aggs": {
     "open mondays": {
-      "nested": {
-        "path": "opening_hours"
-      },
+      "nested": { "path": "opening_hours" },
       "aggs": {
-        "by time": {
-          "terms": {
-            "field": "opening_hours.time"
+        "by hours": {
+          "filter": { "term": { "opening_hours.day": "monday" } },
+          "aggs": {
+            "by hours": {
+              "terms": {
+                "field": "opening.time"
+              }
+            }
           }
         }
       }
