@@ -5,7 +5,7 @@ Elasticsearch offers its functionality via API endpoints over HTTP. Therefore an
 
 ## curl
 
-The most common way to communicate with Elasticsearch is using the command line tool [curl](https://curl.se/). The examples in the official Elasticsearch documentation provide curl commands to copy.
+The most common way to communicate with Elasticsearch is using the command line tool [curl](https://curl.se/). The examples in the official Elasticsearch documentation also provide curl commands to copy.
 
 ✅ Check that Elasticsearch is accessible at [localhost:9200](http://localhost:9200)
 
@@ -46,9 +46,9 @@ All communication is done via HTTP therefore any HTTP / REST client can be used 
 
 ## Cerebro
 
-Another useful tool to check the state of Elasticsearch is [Cerebro](https://github.com/lmenezes/cerebro) (the successor to **head** and **kopf**). It provides a web interface to see the cluster state, Elasticsearch instances, indexes. It also provides some basic management capabilities, for example to set aliases, create / restore snapshots. One of the views is a basic query interface.
+Another useful tool to check the state of Elasticsearch is [Cerebro](https://github.com/lmenezes/cerebro) (the successor to **head** and **kopf**). It provides a web interface to see the cluster state, Elasticsearch instances, indexes and more. It also provides some basic management capabilities, for example to set aliases or create / restore snapshots. One of the views is a basic REST interface.
 
-The repository [Asquera/elasticsearch-docker](https://github.com/Asquera/elasticsearch-docker) also contains a Cerebro container to start. In case you have checked out the repository and are using the setup with **Docker** and **Docker-Compose** Cerebro can be started with:
+The repository [Asquera/elasticsearch-docker](https://github.com/Asquera/elasticsearch-docker) also contains a Cerebro container for use. In case you have checked out the repository and are using the setup with **Docker** and **Docker-Compose** Cerebro can be started with:
 
 ✅ Start Cerebro in a separate shell alongside Elasticsearch
 
@@ -56,4 +56,4 @@ The repository [Asquera/elasticsearch-docker](https://github.com/Asquera/elastic
 docker-compose up --build --detach cerebro
 ```
 
-Once started Cerebro open your browser to access it at URL [localhost:9000](http://localhost:9000).
+Once started Cerebro open your browser to access it at URL [localhost:9000](http://localhost:9000). The landing page asks for the URL of the Elasticsearch instance. When Cerebro is started as a Docker container provide the name of the container as given in the `docker-compose.yml` file, [http://elasticsearch01:9200](http://elasticsearch01:9200) instead of `localhost:9200`.

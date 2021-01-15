@@ -1,15 +1,16 @@
 # Elasticsearch Setup
 
-In order to follow the examples it is recommended to run an Elasticsearch instance. Most examples only require a single instance. There are multiple ways to set up an environment.
+In order to follow the examples in this book it is recommended to run an Elasticsearch instance. Nearly all examples only require a single instance. There are multiple ways to set up an environment.
 
+> All examples are tested with Elasticsearch 7.8.1. Using an earler or newer version should most likely work fine.
 
 ## Docker Compose (recommended)
 
-The recommended way is to use the same environment as used in the presentations, available at the Github repository [Asquera/elasticsearch-docker](https://github.com/Asquera/elasticsearch-docker). This setup uses [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) to start Elasticsearch (and other containers).
+The recommended way is to use the same local setup as used in the presentations. The setup is available at the Github repository [Asquera/elasticsearch-docker](https://github.com/Asquera/elasticsearch-docker). It uses [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) to start Elasticsearch (and other containers).
 
 To set up the same environment:
 
-* ✅ [Install Docker](https://docs.docker.com/get-docker/) for your operating system
+* ✅ [Install Docker](https://docs.docker.com/get-docker/) for your operating system (if not present)
   * **Note** the Windows installation includes Compose
 * ✅ in case the installation does not include **Compose**, [install Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -23,7 +24,11 @@ git clone https://github.com/Asquera/elasticsearch-docker.git
 
 this project also includes a [Readme](https://github.com/Asquera/elasticsearch-docker/blob/main/Readme.md) with instructions on how to use the setup.
 
-✅ Change to the `elasticsearch-docker` folder.
+✅ Change to the `elasticsearch-docker` folder
+
+```bash
+cd elasticsearch-docker
+```
 
 ✅ Start a single Elasticsearch instance by running the command:
 
@@ -31,9 +36,11 @@ this project also includes a [Readme](https://github.com/Asquera/elasticsearch-d
 docker-compose up --build elasticsearch01
 ```
 
-This starts the Elasticsearch container named **elasticsearch01**, which is part of the environment. This may take a few minutes, there is also log output on stdout. Once started, the Elasticsearch instance is accessible at [localhost:9200](http://localhost:9200). You may need to open another shell to access it or add the option `--detach` (or short `-d`) to the `docker-compose` command to start the instance in detached mode.
+This starts the Elasticsearch container named **elasticsearch01**, which is one of the containers in the setup. This may take a few minutes to initialize. The command also logs its output on stdout.
 
-> **🔎** The repository contains a `docker-compose.yml` file that defines multiple other containers for different setups, e.g. ELK stack that is useful for some scenarios.
+Once started, the Elasticsearch instance is accessible at [localhost:9200](http://localhost:9200). You may need to open another shell to access it or add the option `--detach` (or short `-d`) to the `docker-compose` command to start the instance in detached mode.
+
+> **🔎** The repository contains a `docker-compose.yml` file that defines multiple other containers for different setups, e.g. ELK stack that is useful for a few of the examples.
 
 
 ## Docker
@@ -50,7 +57,7 @@ Once installed the following command downloads the official Elasticsearch Docker
 docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.8.1
 ```
 
-This downloads, unpacks and starts the official Elasticsearch Docker image (verion `7.8.1`). This starts the Elasticsearch instance and forwards ports `9200` and `9300`. Once started the Elasticsearch instance is accessible at [localhost:9200](http://localhost:9200). You may need to open another shell to access it.
+This downloads, unpacks and starts the official Elasticsearch Docker image (verion `7.8.1`). The command starts the Elasticsearch instance and forwards ports `9200` and `9300`. Once started the Elasticsearch instance is accessible at [localhost:9200](http://localhost:9200). You may need to open another shell to communicate with it.
 
 
 ## VM

@@ -7,6 +7,8 @@
 - [Analysis](./analysis/README.md)
   - [Useful APIs](./analysis/apis.md)
 - [Search](./queries/README.md)
+  - [Introduction](./queries/introduction.md)
+  - [Scoring](./queries/scoring.md)
   - [Queries](./queries/queries/README.md)
     - [Term Query](./queries/queries/term.md)
     - [Match Query](./queries/queries/match.md)
