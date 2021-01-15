@@ -1,6 +1,6 @@
 ## Scoring
 
-Elasticsearch ranks search results by calculating a score for each matching document that depends on its indexed data & the particular query. The scores define the order in which results are returned. The document with the highest score is returned first, the second highest scored is returned second, etc.
+Elasticsearch ranks search results by calculating a score for each matching document. This score depends on the indexed data & the particular query. The calculated scores define the order in which the results are returned. The document with the highest score is returned first, the second highest scored is returned second, etc.
 
 > **❗️** The *score* defines the order in which results are ranked. The scores themselves have no application level meaning. Given a particular query the calculated scores specify the relation between documents only. **Different** queries may produce **different** scores.
 
@@ -14,7 +14,7 @@ Each particular query generates its own range of scores that depends on a number
 > The **filter context** in a query answers the question *Does this document match this query clause*? It's a binary decision, either the document matches or not. For these filters no score is calculated or a default value of `1.0` is automatically applied.
 
 
-## Useful Resources:
+## Useful Resources
 
 * [Query And Filter Context](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html) - Elasticsearch documentation
 * [How Scoring Works In Elasticsearch](https://www.compose.com/articles/how-scoring-works-in-elasticsearch/)

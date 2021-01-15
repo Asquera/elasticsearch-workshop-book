@@ -3,12 +3,14 @@
 
 ## Mapping
 
-In order to provide full text search and other queries the data needs to be indexed. An index [mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) defines how documents should be indexed. A mapping is comparable to a database schema as it defines which fields are analyzed / indexed. **Only indexed fields are searchable.**
+In order to provide full text search and other queries the data needs to be indexed. An **index mapping** (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html)) defines how documents should be indexed. A mapping is comparable to a database schema as it defines which fields are analyzed & indexed.
+
+> Only indexed fields are searchable.
 
 
 ## Create Index
 
-The mapping needs to be given at index creation time. Changes to this mapping later requires that the documents are either indexed into a new index or by using [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html) to index documents from one index to another.
+The mapping needs to be specified at index creation time. Changes to this mapping later requires that the documents are either indexed into a new index or by using the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html) to index documents from one index to another.
 
 To create a new index with a `mapping` the following command can be executed in your terminal.
 
@@ -26,7 +28,7 @@ curl -H 'Content-Type: application/json' -X PUT 'http://localhost:9200/hello_wor
 }'
 ```
 
-This uses the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html) to create a new index with a mapping. When successful a new index named `hello_world` is created. This index is empty and does not contain any documents yet. The only defined field for now is `title` (of type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html)).
+This uses the [Create Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html) to create a new index with a mapping. When successful a new index named `hello_world` is created. This index is empty and does not contain any documents yet. The only defined field for now is `title` (of type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html)).
 
 > **Note** the command assumes there is an Elasticsearch instance accessible at [localhost:9200](http://localhost:9200).
 
@@ -40,7 +42,7 @@ The examples of this chapter use the Index API to create a new index with settin
 > ```
 
 
-## Adding data
+## Adding Documents
 
 Once the index is created no documents are in it yet. In order to see that queries are working we first need to fill the index with some data.
 Instead of adding each document one by one the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) is used. This allows us to send multple documents in one HTTP request instead of multiple separate calls.
@@ -62,13 +64,13 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/hell
 
 each pair of lines define actions by using **newline delimited JSON** (NDJSON), where the first line specifies to index the document, while the second line contains the document to index. Therefore the `Content-Type` in the HTTP request is set to `application/x-ndjson`. Elasticsearch offers a REST API, therefore it's a `POST` request.
 
-> **🔎** To send documents from a file use curl's `--data-binary` option.
+> **🔎** To send documents from a file use **curl**'s `--data-binary` option.
 
 
 ## Search API
 
 Once the index is created and contains a set of indexed documents, the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html) is used to find documents that match a given query.
-The simplest query is a [Match All Query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html) that simply returns all documents in an index.
+The simplest query is a [Match All Query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html) that returns all documents in an index.
 
 The following command demonstrates how to search for documents in the `hello_world` index.
 
@@ -84,7 +86,7 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/hello_wor
 
 This commands sends a query as JSON payload to the `/hello_world/_search` API endpoint of the index `hello_world` (**note** the content type is set to `application/json`). The `query` field specifies the query type, in this case a `match_all` query.
 
-> **❗️** Elasticsearch accepts a JSON payload when sending a `GET` request. In case the used HTTP library or framework does not provide this capability the same request can be send via `POST`.
+> **❗️** Elasticsearch accepts a JSON payload when sending a `GET` request. In case the used HTTP library or framework does not support this capability the same request can be send via `POST`.
 
 The output of the search query looks similar to the following:
 
@@ -142,16 +144,16 @@ The JSON response contains some meta information, such as how long the query too
 
 ## Delete Index
 
-For the examples given in the book it's useful to delete an existing index, for example to adjust the index mapping. Check the [Delete Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html) in the Elasticsearch documentation for more details.
+For the examples given in the book it's useful to delete an existing index, for example to create a new index with an updated mapping. Check the [Delete Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html) in the Elasticsearch documentation for more details.
 
 ✅ Delete the Elasticsearch index `hello_world`
 
 ```bash
-curl -X DELETE 'http://localhost:9200/match_test'
+curl -X DELETE 'http://localhost:9200/hello_world'
 ```
 
 If successful the deletion operation is acknowledged with:
 
-```txt
+```json
 {"acknowledged":true}
 ```
