@@ -48,15 +48,15 @@ curl -X PUT 'http://localhost:9200/context_suggestions' -H 'Content-Type: applic
 The mapping defines the following fields.
 
 * `title` with field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html)
-* `title.completion` multi field with type [completion](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html#completion-suggester) with two contexts that point to fields `genre` and `year` of the same document
+* `title.completion` multi field with type [completion](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html#completion-suggester) with a context that point to field `genre` of the same document
 * `genre` with field type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html)
 * `year` with field type [integer](https://www.elastic.co/guide/en/elasticsearch/reference/current/number.html)
 
-The interesting part here is that the `title.completion` field that defines two categories (`genre` & `year`) inside the `contexts` list.
+The interesting part here is that the `title.completion` field that defines one category (`genre`) inside the `contexts` list.
 
 > Additional context mappings increase the index size for the completion field.
 
-> Only `keyword` or `text` fields can be parsed for context fields.
+> **❗️** Only `keyword` or `text` fields can be parsed for context fields.
 
 
 ## Add Documents
@@ -94,7 +94,7 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/cont
 
 ## Exercise & Example
 
-A context suggestion query is more complex than the previous completion query. The query requires a `contexts` field in the `suggest` block.
+A context suggestion query is more complex than the previous `completion` query. The query requires a `contexts` field in the `suggest` block.
 
 ✅ Run the following `suggest` query with search term *"star"* to get a list of results
 

@@ -1,7 +1,7 @@
 # Percentiles Aggregation
 
-A multi-value metrics aggregation is the `percentiles` aggregation, see the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-percentile-aggregation.html).
-This aggregation is useful to show a distribution of values that do not follow a normal distribution. It's useful when the distribution follows a power law distribution. A practical example is finding the slowest response times of a web service, to find all values greater than 95%, 99% etc. For this type of distribution the normal statistics do not provide useful insights, an average response time of `50ms` may hide the fact that there are outliers above `2.000ms`.
+One multi-value metrics aggregation is the `percentiles` aggregation (see the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-percentile-aggregation.html)).
+This aggregation is useful to show a distribution of values that do not follow a normal distribution. It's useful when the distribution follows a power law distribution. A practical example is finding the slowest response times of a web service, in particular to find response times above 95%, 99% etc. For this type of distribution the normal statistics do not offer useful insights, an average response time of `50ms` may hide the fact that there are outliers above `2.000ms`.
 
 
 ## Index Mapping
@@ -122,4 +122,7 @@ The output looks like this:
 
 </details>
 
+How do you interpret these values?
+
 > The aggregation supports the field `percents` to provide a list of float values the distribution is grouped into, e.g. `[25, 50, 95, 99, 99.9]`.
+

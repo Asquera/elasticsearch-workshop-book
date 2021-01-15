@@ -4,14 +4,23 @@ The [Curator](https://www.elastic.co/guide/en/elasticsearch/client/curator/5.8/c
 
 The Elasticsearch project now supports several new API endpoints that take on some of the functionality, that were previously covered by defining specific actions in the Curator, e.g. index life cycle management, log index rotation, etc. For example Elasticsearch now supports [Index Lifecycle Management](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-lifecycle-management.html) via lifecycle policies. For more information see how to [configre a lifecycle policy](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/set-up-lifecycle-policy.html).
 
-API endpoints marked with the **XPack** label require at least the [Basic license subscription](https://www.elastic.co/subscriptions). Other Elasticsearch distributions, most notably the [AWS Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/faqs/) may not provide these API endpoints. They usually also lack some minor versions behind the official releases.
+API endpoints marked with the **XPack** label require at least a [Basic license subscription](https://www.elastic.co/subscriptions). Other Elasticsearch distributions, most notably the [AWS Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/faqs/) may not provide these API endpoints. They usually also lack some minor versions behind the official releases.
 
 
 ## Configuration
 
-The Curator takes a [config file](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/configfile.html) that specifies the connection to the Elasticsearch cluster and an [actions file](https://www.elastic.co/guide/en/elasticsearch/client/curator/5.8/actions.html) to define tasks to execute with Elasticsearch. The curator is a CLI tool that can be executed on the command line. It's also useful in automated setups or can be run as a cron job.
+The Curator takes a [config file](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/configfile.html) that specifies the connection to the Elasticsearch cluster and an [actions file](https://www.elastic.co/guide/en/elasticsearch/client/curator/5.8/actions.html) to define tasks to execute within Elasticsearch. The curator is a CLI tool that can be executed on the command line. It can be easily integrated in with automated setups or can be executed by a cron job.
 
-The `curator` command line tool takes a configuration file and an actions configuration. Once installed it can be executed in the terminal as follows:
+The `curator` command line tool takes a configuration file and an actions file. Once installed it can be executed in the terminal as follows:
+
+> When using the Docker + Docker Compose environment as described in the [Setup](../introduction/setup.md) section, a container can be started
+> ```bash
+> docker-compose up -d cerebro
+> ```
+> Then connect to the container via `docker` with its `container-id`, e.g. using command
+> ```bash
+> docker exec -it <container-id> /bin/bash
+> ```
 
 ✅ Run the curator on the command line.
 
@@ -50,7 +59,7 @@ logging:
   blacklist: ['elasticsearch', 'urllib3']
 ```
 
-It specifies the connection to the Elasticsearch cluster, in this case it assumes there is an instance accessible at `elasticsearch:9200`.
+It specifies the connection to the Elasticsearch cluster, in this case it assumes there is an instance accessible at `elasticsearch01:9200`.
 
 > **❗️** The Curator needs to have access to the Elasticsearch instance, either by installing it on the same host or on a remote one. If you install it on a remote host, access to Elasticsearch should be secured. The security aspect is outside the scope of this book.
 

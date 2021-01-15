@@ -20,7 +20,9 @@ The basic structure of an aggregation is:
 }
 ```
 
-The aggregation is sent to the same Search API endpoint as the previous queries. Both `aggs` and `query` can complement each other, for example a search request can have a `query` block to filter and/or match specific documents while the aggregations in `aggs` use the resulting documents to group them or calculate metrics on them. The response format looks like (omitting some fields)
+The aggregation is sent to the same Search API endpoint as the previous queries. Both `aggs` and `query` can complement each other, for example a search request can have a `query` block to filter and/or match specific documents while the aggregations in `aggs` use the resulting documents to group them or calculate metrics on them.
+
+The response from a `terms` aggregation may look as follows (omitting some fields)
 
 ```json
 {
@@ -43,7 +45,7 @@ The aggregation is sent to the same Search API endpoint as the previous queries.
 }
 ```
 
-The entries in the `buckets` field are sorted by field `doc_count`, the number of documents that match the same term.
+The given output sorts the entries of `buckets` by field `doc_count`, the number of documents that match the same term.
 
 
 ## Examples

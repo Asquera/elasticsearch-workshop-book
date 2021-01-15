@@ -29,7 +29,10 @@ curl -X PUT 'http://localhost:9200/multi_test' -H 'Content-Type: application/jso
 }'
 ```
 
-This creates a new index named `multi_test` and an index mapping with three properties, `title`, `description` and `tags`. The first two fields are of type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html), the last field is of type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html). The **text** types set the `standard` analyzer.
+This creates a new index named `multi_test` and an index mapping with three properties
+
+* `title` and `description` are using field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html) using the `standard` analyzer
+* `tags` with field type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html).
 
 
 ## Add Documents
@@ -144,5 +147,5 @@ curl -X POST 'http://localhost:9200/multi_test/_search?pretty' -H 'Content-Type:
 
 This query boosts a match in `title` by a factor of `3` compared to a match in `description`.
 
-> Setting boost factors is a good way to rank documents after the fields they match.
+> Setting boost factors is a good way to rank documents according to the fields they match.
 </details>

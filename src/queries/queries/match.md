@@ -2,7 +2,7 @@
 
 One of the standard queries to perform a full text search is the [match query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html). This query type returns documents that match the given input text.
 
-> The input text given in the query is also analyzed.
+> The input text in the search query is also analyzed. The `text` field type supports the `analyzer` field that is applied during **index time** and **search time**. A separate field `searcn_analyzer` can be used to set a different analyzer during **search time** but is rarely required to so.
 
 
 ## Index Mapping
@@ -32,7 +32,7 @@ This defines a mapping with the following fields:#
 * `title` has field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html)
 * `tags` has field type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html)
 
-The **text** type also sets the [standard](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html) analyzer. The text input for the `title` field is analyzed using this analyzer. It ensures the indexed terms and the given query terms are analyzed the same way. Otherwise they would not necessarily match or may match different terms.
+The **text** type also sets the [standard](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html) analyzer. The text input for the `title` field is analyzed using this analyzer. It ensures the indexed terms and the search query terms are analyzed the same way. Otherwise they would not necessarily match or would match on different terms.
 
 
 ## Add Documents
@@ -96,10 +96,8 @@ Build a **match** query to find documents.
 
 ✅ Write a query to find the text `star` in field `title`
 
-✅ Write a query to search for text `star trek` in field `title`
-
 <details>
-<summary>Search Request to search for <code>star</code> </summary>
+<summary>A solution with <code>star</code> </summary>
 
 ```bash
 curl -X POST 'http://localhost:9200/match_test/_search?pretty' -H 'Content-Type: application/json' -d '{
@@ -114,8 +112,11 @@ curl -X POST 'http://localhost:9200/match_test/_search?pretty' -H 'Content-Type:
 ```
 </details>
 
-> **🔎** Check the search results for `star trek`, can you tell why there is also the document listed for `star wars`?
-> How could you solve this in a way, that the document with title `star wars` is not returned as a result?
+✅ Write a query to search for text `star trek` in field `title`
+
+Check the search results for `star trek`, can you tell why there is also the document listed for `star wars`?
+
+How could you solve this in a way, that the document with title `star wars` is not returned as a result?
 
 <details>
 <summary>Possible solution</summary>
@@ -138,8 +139,6 @@ curl -X POST 'http://localhost:9200/match_test/_search?pretty' -H 'Content-Type:
 
 ✅ Write a query that includes the [fuzziness](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query-fuzziness) property and search for `incredible`.
 
-> **🔎** Check the results, are they what you would expect?
-
 <details>
 <summary>Possible solution</summary>
 
@@ -160,3 +159,5 @@ curl -X POST 'http://localhost:9200/match_test/_search?pretty' -H 'Content-Type:
 
 The `fuzziness` setting is useful to match documents where the search term contains a typo or a transposition.
 </details>
+
+Check the results, are they what you would expect?

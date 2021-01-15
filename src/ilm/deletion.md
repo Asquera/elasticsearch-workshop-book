@@ -2,16 +2,15 @@
 
 One common task in a log-based Elasticsearch infrastructure is to keep logs for a certain amount of time, e.g. 30 days. The Curator can be used to automatically delete older indices. 
 
-> **❗️** in case the XPack functionality is available, check out the [index lifecycle management](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management.html) documentation of Elasticsearch on how to use index lifecycle policies.
+> In case the XPack functionality is available, check out the [index lifecycle management](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management.html) documentation of Elasticsearch on how to use index lifecycle policies.
 
 ## Configuration
 
-Set up the `config.yml` to communicate with the Elasticsearch cluster. Check the [example `config.yml`](curator.html#configuration) on how to the configuration file needs to be defined.
-
+Set up the `config.yml` to communicate with the Elasticsearch cluster. Check the [example `config.yml`](curator.html#configuration) on how to set up the configuration file.
 
 ## Action
 
-The Curator provides a [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action to delete indices. The basic structure of this action is:
+The Curator provides a `delete_indices` action to delete indices, see [Curator documentation](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) for more details. The basic structure of this action is:
 
 ```yaml
 action: delete_indices
@@ -23,7 +22,7 @@ filters:
 - filtertype: ...
 ```
 
-The important property is the [filters](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filters.html) list that can take a number of `filtertypes` fields. Check the [age](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_age.html) and [pattern](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_pattern.html) filters.
+One important property is the [filters](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filters.html) list that can take a number of `filtertypes` fields. Check the [age](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_age.html) and [pattern](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_pattern.html) filters.
 
 The `pattern` filter type allows to find indices that match the given string pattern, e.g. `logstash-`. The `age` filter type matches the indices based on their age. The age can be specified in multiple ways, e.g. name based, creation based, etc.
 
@@ -35,7 +34,7 @@ The `pattern` filter type allows to find indices that match the given string pat
 Follow these steps to run the excercise
 
 * ✅ start Elasticsearch
-* ✅ create at least 3 daily indices with a date based suffix, e.g. `logstash-2021.01.05`, `logstash-2021.01.04`, etc., in order to see the effect it's recommended to use current dates
+* ✅ create at least 3 daily indices with a date based suffix, e.g. `logstash-2021.01.05`, `logstash-2021.01.04`, etc., in order to see the effect it's recommended to use current dates (see the [Create Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html))
 * ✅ create a `config.yml` (see [Configuration section](curator.html#configuration))
 * ✅ create a `action.yml` that uses the [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action to delete indices older than `2` days
 * ✅ run `curator` command line tool with `--dry-mode`, check the output for actions
@@ -43,15 +42,13 @@ Follow these steps to run the excercise
 
 When successful, there should only be two indices starting with the same suffix, e.g. `logstash-*`, older indices should have been deleted.
 
-> **🔎** depending on your chosen values in the **age** filter type no indices may have been deleted. What is the difference between `source: creation_date` and `source: timestring`?
+> Depending on your chosen values in the **age** filter type no indices may have been deleted. What is the difference between `source: creation_date` and `source: timestring`?
 
 
-## Solution
-
-Here is a version of the `action.yml`.
+Here is a version of the `action.yml` to delete older indices.
 
 <details>
-<summary>Click Me</summary>
+<summary>Possible Solution</summary>
 
 ```yaml
 # delete_indices.yml
@@ -80,3 +77,5 @@ actions:
       unit_count: 2
 ```
 </details>
+
+Mulitple action files can be used separately. This way separate indices or index groups can be managed, for example different applications, users etc.

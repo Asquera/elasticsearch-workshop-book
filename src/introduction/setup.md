@@ -60,6 +60,45 @@ docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elas
 This downloads, unpacks and starts the official Elasticsearch Docker image (verion `7.8.1`). The command starts the Elasticsearch instance and forwards ports `9200` and `9300`. Once started the Elasticsearch instance is accessible at [localhost:9200](http://localhost:9200). You may need to open another shell to communicate with it.
 
 
+## Docker Commands
+
+Here are a few useful `docker` commands to start a container or to open a shell to a running container.
+
+To start a Docker container from a specific image. The command
+
+```bash
+docker run postgres:13.1
+```
+
+downloads, unpacks and starts the Docker container for Postgres 13.1.
+
+To list all running containers, for example to determine the **container id**.
+
+```bash
+docker ps
+```
+
+To connect to a running container to either run a command or open a shell
+
+```bash
+docker exec -it <container-id> /bin/bash
+```
+
+where `<container-id>` is the id of a running container. Once connected to a container you can navigate, edit files inside a container.
+
+To stop a specific container run
+
+```bash
+docker stop <container-id>
+```
+
+To remove a stopped container, for example when different Docker Compose setups use same conflicting name.
+
+```bash
+docker rm <container-id>
+```
+
+
 ## VM
 
 There also ways to set up an Elasticsearch either locally (e.g. Virtual Box, vagrant) or remotely at a cloud provider. This may require manual installation of Elasticsearch, but the principle is similar.

@@ -137,4 +137,4 @@ curl -X POST 'http://localhost:9200/term_test/_search?pretty' -H 'Content-Type: 
 ```
 </details>
 
-> How would you query documents that must have `count` with value `10` **and** `published_date` set to `2020-12-01`?
+How would you query documents that must have `count` with value `10` **and** `published_date` set to `2020-12-01`?

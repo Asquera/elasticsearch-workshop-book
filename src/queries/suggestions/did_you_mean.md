@@ -1,6 +1,10 @@
 # Did You Mean
 
-Another suggestion type is the *did you mean* feature, most notably known by using Google's search. Similar to the other suggestion features it's useful to help navigate the user to more relevant search results. This feature is often used to show alternatives, where the user may have entered a misspelled text to search for. For example instead of showing an empty list of search results, the user may see the suggestion and click on it to execute the same search again, with the adjusted search term.
+Another suggestion type is the *did you mean* feature, most notably displayed on Google's search results page. Similar to the other suggestion features it's useful to help navigate the user to more relevant search results. This feature is often used to show alternatives, where the user may have entered something misspelled or a typo.
+
+For example instead of showing an empty list of search results, the user may see one or multiple *did you mean* suggestions, click on it to execute the same search again with the adjusted search term.
+
+> Elasticsearch does not have a specific field type to support this. This time a custom `analyzer` is built to provide this feature.
 
 
 ## Index Mapping
@@ -56,7 +60,7 @@ This creates a new index named `did_you_mean` with a mapping using a **multi fie
 * `title` with field type [text](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html)
 * `title.did_you_mean` is a multi field using a [custom analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-custom-analyzer.html) to index input text.
 
-The custom analyzer named `did_you_mean_analyzer` indexes terms as follows. For the example title text *"Star Trek Into Darkness"* it generates the following tokens.
+The custom analyzer named `did_you_mean_analyzer` indexes terms as follows. For the example title text *"Star Trek Into Darkness"* it generates the following tokens. Check the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html) for a list of built-in analyzers.
 
 ✅ Run the analyze query to see the generated tokens.
 
@@ -67,7 +71,7 @@ curl -X GET "localhost:9200/did_you_mean/_analyze?pretty" -H 'Content-Type: appl
 }'
 ```
 
-This returns the following list of tokens:
+This generates the following list of tokens:
 
 ```
 "star"
@@ -118,9 +122,9 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/did_
 
 ## Query & Exercise
 
-The basic `suggest` query looks as follows. See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html) on suggesters to learn more.
+To provide *did you mean* suggestions we use the `suggest` block of the [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html). See also the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html) on suggesters to learn more.
 
-✅ Run the next query with `starr` and then `starr warrs`.
+✅ Run the next query with search terms `starr` and then `starr warrs`.
 
 ```bash
 curl -H 'Content-Type: application/json' -X POST 'http://localhost:9200/did_you_mean/_search?pretty&human' -d '{
@@ -141,9 +145,9 @@ Both queries (`starr` and `starr warrs`) should find matches.
 
 > Do the results match what you would expect?
 
-Some suggestions do not make much sense, for example when searching for input text *"starr warrs"* the returned results contain entries which do not exist this way in the documents.
+Some suggestions may make no immediate sense, for example when searching for input text *"starr warrs"* the returned results contain entries which do not exist this way in the documents.
 
-✅ Build a query that uses the `collate` property to remove non existing suggestions.
+✅ Build a query that uses the `collate` field to remove non existing suggestions.
 
 <details>
 <summary>A solution using collate</summary>
@@ -180,5 +184,5 @@ curl -X POST 'http://localhost:9200/did_you_mean/_search?pretty' -H 'Content-Typ
 }'
 ```
 
-The `collate` block defines a `match_phrase` query to check our suggestion in field `title.did_you_mean`. The block makes use of template variables `field_name` and `suggestion`, the former is defined as a parameter in `params`, the latter is automatically provided by Elasticsearch.
+The `collate` block defines a `match_phrase` query to check our suggestion in field `title.did_you_mean`. The block makes use of template variables `field_name` and `suggestion`, the former is defined as a parameter in the `params` block, the latter is automatically provided by Elasticsearch.
 </details>

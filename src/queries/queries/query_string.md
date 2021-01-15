@@ -1,6 +1,17 @@
 # Simple Query String
 
-The `simple_query_string` query provides a syntax to parse and split the search input, based on operators. The query then analyzes each split text before returning documents. This type of query supports wildcards and operators as input to allow complex search requests.
+The `simple_query_string` query provides a syntax to parse and split the search input, based on operators (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html)). The query then analyzes each split text before returning documents. This type of query supports wildcards and operators as input to allow complex search requests.
+
+The Simple Query String Syntax supports:
+
+* `+` **AND** operation: `hello + world` field contains both terms
+* `|` **OR** operation: `hello | world` field contains either of these terms match
+* `-` negates a single token: `-hello` field does not contain term
+* `"` wraps a number of tokens to signify phrase: `"hello world"`
+* `*` at the end of a term is a **prefix** query: `hel*` matches `hello`, `help` etc.
+* `(` & `)` signify precedence: `(hello | world) & say`
+* `~N` after a word signifies fuzziness: `hello~2` allows edit distance `2`
+* `~N` after a phrase signifies slop amount: `"hello world"~2` allows slop amount `2`
 
 > There is also a `query_string` query type (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html)) that useful when generating search inputs. It's less suited for user facing search text boxes. It's more query and returns an error if the input contains invalid syntax.
 
@@ -70,7 +81,7 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/quer
 
 Build a `simple_query_string` query to find documents.
 
-✅ Write a `simple_query_string` query to find documents to have terms `space` **and** `action` in the `tags` field but not containing `star wars` in the `title` field
+✅ Write a `simple_query_string` query to find documents that have terms `space` **and** `action` in the `tags` field but not containing `star wars` in the `title` field
 
 > There are multiple ways to solve this!
 
@@ -96,7 +107,8 @@ Alternatively each search term can be assigned to a specific field.
 curl -X POST 'http://localhost:9200/query_string_test/_search?pretty' -H 'Content-Type: application/json' -d '{
   "query": {
     "query_string": {
-      "query": "tags:(action AND space) -title:(star AND wars)"
+      "query": "tags:(+action +space) -title:(+star +wars)",
+      "default_operator": "and"
     }
   }
 }'

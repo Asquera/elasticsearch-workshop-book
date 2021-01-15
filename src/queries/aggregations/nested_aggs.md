@@ -1,6 +1,6 @@
 # Nested Aggregation
 
-Documents can contain nested properties by using the `nested` field type (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html)). The `nested` field type is useful when there is a relation between the main document and other related documents. For example a restaurant may contain the opening hours as inner objects or a blog post may contain comments.
+Documents can contain nested properties by using the `nested` field type (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html)). The `nested` field type is useful when there is a relation between the main document and inner documents. For example a restaurant may contain the opening hours as an inner object or a blog post may contain comments.
 
 Imagine having the following document for a restaurant.
 
@@ -18,11 +18,10 @@ Imagine having the following document for a restaurant.
 ```
 
 The document describes a restaurant with `opening_hours` as a list of tuples of `day` and `time`.
-When indexing this document structure **without** a `nested` field, the result is that these fields are stored as flat arrays.
+When indexing this document structure **without** a `nested` field, the result is that these fields are stored as flat arrays separately.
 
-A search request using this mapping structure cannot easily answer the question on which days the restaurant is open between `10-14` hours. The response will include the full document because when at least one entry in the `time` field match the value of `10-14`, but it's not necessarily clear how many / which days this applies to.
-
-A mapping without the `nested` field type may look like the following mapping.
+A search request using this mapping structure cannot easily answer the question on which days the restaurant is open between `10-14` hours.
+For example a mapping without the `nested` field type may look like the following mapping.
 
 ```json
 {
@@ -46,7 +45,7 @@ A mapping without the `nested` field type may look like the following mapping.
 }
 ```
 
-An attempt to find all documents where `time` is `10-18` and `day` contains `monday` may look like:
+An attempt to find all documents where `time` is `10-18` **and** `day` contains `monday` may look like:
 
 ```bash
 curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_aggs/_search?pretty' -d '{
@@ -61,11 +60,11 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 }'
 ```
 
-This query will return all documents were any entry of `opening_hours.day` contains `monday` and `opening_hours.time` contains the value `10-18`, but the specific combination is not expressed, the `term` queries are not related to the nested document structure. Therefore the response contains all documents were fields hold these values.
+With the given index mapping above, this query will return all documents where any entry of `opening_hours.day` contains value `monday` and where `opening_hours.time` contains the value `10-18`. This does not reduce the results to these documents only that match both values for the same entry of `opening_hours`.
 
-> **🔎** The `nested` field type groups properties as inner documents. Elastiscearch indexes the documents separately.
+> **🔎** The `nested` field type groups properties as inner documents. Elastiscearch indexes these documents separately.
 
-Once the index mapping makes use of the `nested` field te search request can be more precise by using a `nested` sub query.
+Once the index mapping makes use of the `nested` field the search request can search for inner documents by using a `nested` sub query.
 
 <details>
 <summary>Check the updated index mapping</summary>
@@ -119,7 +118,7 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 }'
 ```
 
-This time the query only returns the restaurants (documents) that match both values in the same tuple of `day` and `time`.
+This time the query only returns the restaurants (documents) that match values in the same entry of `opening_hours`.
 
 
 ## Index Mapping
@@ -218,7 +217,7 @@ curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_ag
 <details>
 <summary>Possible solution</summary>
 
-This query below uses a `nested` aggregation with an inner `filter` aggregation to find all documents that have `opening_hours.day` set to `monday`, groups all hits using a `terms` aggregation. The result is opening hours of all open restaurants on Mondays.
+This query below uses a `nested` aggregation with an inner `filter` aggregation to find all documents that have `opening_hours.day` set to `monday`, groups all hits using a `terms` aggregation. The result is the list of opening hours slots of all restaurants open on a Monday.
 
 ```bash
 curl -H 'Content-Type: application/json' -X GET 'http://localhost:9200/nested_aggs/_search?pretty' -d '{

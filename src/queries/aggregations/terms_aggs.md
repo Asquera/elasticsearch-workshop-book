@@ -1,13 +1,13 @@
 # Terms Aggregation
 
 One of the simpler aggregations is the `terms` bucket aggregation (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html)).
-It groups documents by terms. All documents that match the same term, e.g. the same `genre` are grouped into the same bucket.
+It groups documents by terms. All documents that match the same term, e.g. the same `genre`, are grouped into the same bucket.
 
 > Terms aggregations work well on the `keyword` field type or other non-text fields.
 
 > **❗️** It's possible but not recommended to build a terms aggregation for `text` field types, but this requires to enable [fielddata](https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html#fielddata-mapping-param).
 
-One use case of a `terms` aggregation is to group all relevant documents by a one or multiple criteria. For example in a web shop an aggregation could be used to group all products by category, color, size, price range etc. These types of aggregation often play well in combination with filters the user may want to enable, e.g. products with color red. In this sense the aggregation also helps to navigate the search space. Other use cases may be to find the most often rated movies, 
+One use case of a `terms` aggregation is to group all relevant documents by a one or multiple criteria. For example in a web shop an aggregation could be used to count all products by category, color, size, price range etc. These types of aggregation often play well in combination with filters the user may want to enable, e.g. products with color red. In this sense the aggregation also helps to navigate the search space. Another use case may be to find the most popular movies by counting ratings.
 
 
 ## Index Mapping
@@ -77,7 +77,10 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/test
 
 ## Exercise
 
-✅ Build a search query with a `terms` aggregation to group all documents by `genre`.
+See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html) on `terms` aggregation.
+
+
+✅ Build a search query with a `terms` aggregation to count all documents by `genre`.
 
 <details>
 <summary>Possible solution</summary>

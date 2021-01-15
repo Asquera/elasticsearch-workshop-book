@@ -1,8 +1,8 @@
 # Filter & Filters Aggregations
 
-The filter aggregation is another fairly simple bucket aggregation. It defines a filter similar to a [filter](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) query as part of the `bool` query.
+The `filter` aggregation is another fairly simple bucket aggregation. It defines a filter similar to a [filter](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) query as part of the `bool` query. See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-filter-aggregation.html) on `filter` aggregation.
 
-The following query shows the structure of a filter aggregation.
+The following query shows the structure of a `filter` aggregation.
 
 ```json
 {
@@ -38,7 +38,7 @@ It's similar to the following query using the bool-based `filter` query.
 
 First the set of documents is filtered, then the aggregations are applied.
 
-> **🔎** There seems to be no real difference between using a bool based `filter` clause compared to using the `filter` aggregation. A good reason to use the former is, that the set of filtered documents applies to all aggregations. Using the `filter` aggregation from the example above receives all documents to filter. Other specified aggregations alongside the `filter` aggregation would therefore see all documents. Depending on the type of search request using a bool based `filter` query first is probably the better option.
+> **🔎** This particular example there is no real difference between using a bool based `filter` clause compared to using the `filter` aggregation. A good reason to use the former is, that the set of filtered documents applies to all aggregations. Using the `filter` aggregation from the example first determines the filtered documents before applying the inner aggregations on them. Other top level aggregations would therefore still see all documents. Depending on the type of search request using a bool based `filter` query first is probably the better option.
 
 
 ## Index Mapping
@@ -74,7 +74,7 @@ This defines a mapping with the following fields:
 
 ## Add Documents
 
-We add a number of few documents that define suitable `genre` and `tags` entries.
+We add a number of documents that define suitable `genre` and `tags` entries.
 
 ✅ Bulk upload documents to index `test_filter_aggs`
 
@@ -107,7 +107,7 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/test
 
 ## Exercise
 
-The exercise is to build the equivalent `filter` aggregation to this search request. The query finds all documentst that match *"scifi"* in the `genre` field and aggregates the result with a `terms` aggregation by `tags`.
+The exercise is to build the equivalent `filter` aggregation to the following query based search request. The query finds all documentst that match *"scifi"* in the `genre` field and aggregates the result with a `terms` aggregation by `tags`.
 
 ```bash
 curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/test_filter_aggs/_search?pretty' -d '{
@@ -130,7 +130,7 @@ curl -H 'Content-Type: application/x-ndjson' -X POST 'http://localhost:9200/test
 }'
 ```
 
-✅ Build an equivalent query that uses a `filter` aggregation instead of the `query` block from the search reqest above.
+✅ Build an equivalent search request that uses a `filter` aggregation instead of the `query` block from the search reqest above.
 
 <details>
 <summary>Possible solution</summary>

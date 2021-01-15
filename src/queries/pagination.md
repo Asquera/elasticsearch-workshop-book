@@ -1,6 +1,6 @@
 # Pagination
 
-Elasticsearch returns the top 10 matching results for a search request. In most situations that is not sufficient, for example the user wants to browse the products on a product page.
+Elasticsearch returns the top 10 matching results for a search request by default. In most situations that is not sufficient, for example the user wants to browse the products on a product page.
 One way to fetch more documents is to use the `from` & `size` parameters in the search query, see the [Search API documentation](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-search.html) for more information.
 
 > **❗️** The default limit of documents to fetch by using `from` and `size` is `10.000` (defined by the [index.max_result_window](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-modules.html#index-max-result-window) setting). Increasing this limit may have an impact on search performance.
@@ -20,7 +20,7 @@ The search query can look as follows:
 
 This query will fetch documents `91` to `100`, skipping the first 90 documents.
 
-**🔎** Elasticsearch has to fetch a total of `90 + 10` documents in order to determine which are the matches from `91 - 100`. The first 90 documents are then skipped. During the *query* phase of the search, all requested shards forward the request to Lucene, each Lucene segment tries to determine 90 documents. When merging the results from all Lucene Segments over the shard level back to the index level a lot of documents have to be fetched and are then filtered out.
+**🔎** Elasticsearch has to fetch a total of `90 + 10` documents in order to determine which are the matches from `91 - 100`. The first `90` documents are then omitted. During the *query* phase of the search, all requested shards forward the request to Lucene, each Lucene segment tries to determine `90` documents. When merging the results from all Lucene segments over the shard level back to the index level a lot of documents have to be fetched and are then filtered out.
 
 > **❗️** The deeper the pagination parameters are the more documents have to be considered in total. The result is a degrading performance and longer response times.
 
@@ -29,17 +29,17 @@ This query will fetch documents `91` to `100`, skipping the first 90 documents.
 
 Since Elasticsearch 7.10 the recommended way to fetch deep pages of documents is to use the `search_after` feature of Elasticsearch (see [Search After documentation](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/paginate-search-results.html#search-after)).
 
-> Elasticsearch recommends the `search_after` parameter instead of using the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/current/scroll-api.html) to get the next batch of search results.
+Elasticsearch recommends the `search_after` parameter instead of using the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/current/scroll-api.html) to get the next batch of search results.
 
 Using `search_after` requires multiple search requests with the same `query` and `sort` values.
-The response then contains a `sort` block with values that are used for the subsequent query which acts as a pointer into the search results.
+The response then contains a `sort` field with values that are used for subsequent queries which acts as a pointer into the search results.
 
 > **❗️** There is a *point in time* feature to keep search results consistent, otherwise an index refesh may return already seen documents or skip them during subsequent searches. This feature is part of [XPack](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-xpack.html) and may not be available.
 
 
 ## Example
 
-Let's create an index with a number of documents to illustrate the `search_after` feature.
+Let's create an index with a number of documents to illustrate the `search_after` feature, without the *point in time* feature.
 
 ✅ Create a new index named `test_search_after` with the following mapping.
 
@@ -91,13 +91,13 @@ This adds a number of documents to our index.
 
 ## Exercise
 
-To get the first page of results, use the `sort` argument in the search request. To make this work this requires a sortable field in the document. In the indexed documents there is an `id` field that can be sorted.
+To get the first page of results using `search_after`, use the `sort` argument in the search request. To make this work this requires a sortable field in the document. In the indexed documents there is an `id` field that can be sorted.
 
-Check the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/paginate-search-results.html#search-after) on `search_after`. Each document has some meta data including `index`
+Check the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/paginate-search-results.html#search-after) on `search_after`.
 
 > Without a `sort` parameter all matched documents are ranked by their score. Documents can be sorted by different fields or by running a short script instead. Check the [Elasticsearch documentation on sorting search results](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/sort-search-results.html) for more details.
 
-✅ Build a first search request to get the first `5` documents of all documents, specify the `id` property in the `sort` block.
+✅ Build a search request to get the first `5` documents of all documents, specify the `id` property in the `sort` block.
 
 <details>
 <summary>Possible solution</summary>
@@ -130,6 +130,6 @@ What are common use cases for this feature?
 * scrolling through logs by a `timestamp` field
 * pagination for larger product catalogs by `product_id` or something else
 
-> Some sortable fields are not that suitable, e.g. `_doc_id`, even though they work.
+> Some sortable fields may return results which seem odd, e.g. `_doc_id`, even though they work.
 
 </details>

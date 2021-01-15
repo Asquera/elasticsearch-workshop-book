@@ -3,7 +3,7 @@
 Elasticsearch supports geo based queries. The mapping supports two geo based field types, [geo_point](https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-point.html) and [geo_shape](https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-shape.html).
 
 * `geo_point` is a pair of two coordinates, can be expressed in different ways, e.g. "41.12,-71.34" (latitude, longitude)
-* `geo_shape` can be an arbitrary geo shape, e.g. rectangles or polygons
+* `geo_shape` can be an arbitrary geo shape, e.g. a rectangle or a polygon
 
 Elasticsearch provides support for the [WKT format](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) as input.
 
@@ -114,12 +114,13 @@ curl -X POST 'http://localhost:9200/geo_test/_search?pretty' -H 'Content-Type: a
 ```
 </details>
 
-> What happens when you use a different reference / central point or change the distance?
+Try different values for `distance` and a different `position` geo coordinates.
+
+What happens when you use a different reference / central point or change the distance?
 
 ✅ Write a **geo_bounding_box** query that finds all documents within a rectangle or polygon
 
-> The value input for the `geo_bounding_box` is specified by two pairs, the `top`, `left` and `bottom`, `right` coordinates. You can check the
-> `position` values of the documents to find some useful values.
+> The value input for the `geo_bounding_box` is specified by two pairs, the `top`, `left` and `bottom`, `right` coordinates. You can check the `position` values of the documents to find some useful values.
 > A `geo_polygon` consists of a list of points that shape the polygon. At least 3 coordinate pairs have to be given.
 
 <details>

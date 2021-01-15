@@ -87,7 +87,7 @@ curl -X PUT 'http://localhost:9200/bool_test' -H 'Content-Type: application/json
 This defines a mapping with the following fields
 
 * `id` and `color` with field type [keyword](https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html#keyword-field-type)
-* `content` with numeric field type [integer](https://www.elastic.co/guide/en/elasticsearch/reference/current/number.html)
+* `count` with numeric field type [integer](https://www.elastic.co/guide/en/elasticsearch/reference/current/number.html)
 * `published_at` with field type [date](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html)
 
 

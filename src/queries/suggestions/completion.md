@@ -3,7 +3,7 @@
 Elasticsearch provides a few specific data types to support suggesters. One of the newer field types is the `completion` type. Typically document fields that contain text for which the auto complete feature should be used, are good candidates for this type.
 See the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html#completion-suggester).
 
-In earlier versions of Elasticsearch a custom text `analyzer` was used to implement the auto complete feature. This is still available.
+In earlier versions of Elasticsearch a custom text `analyzer` was used to implement the auto complete feature using [edge n-gram token filter](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-edgengram-tokenfilter.html). This still can be a useful choice, for example the `completion` field type does not allow an infix search (finding the term `world` in `hello world`). On the other hand it requires a bit more effort and generates more indexed terms.
 
 > **❗️** Using the `completion` field type in the index mapping is not working with the [highlighting](https://www.elastic.co/guide/en/elasticsearch/reference/master/highlighting.html) feature. This means auto completions **do not** highlight the matched part of the text.
 
@@ -87,15 +87,15 @@ curl -H 'Content-Type: application/json' -X POST 'http://localhost:9200/completi
 }'
 ```
 
-> Try different search inputs, what works, what is not possible? What happens when you search for 'incredible'?
+Try different search inputs, what works, what is not possible? What happens when you search for *"incredible"*?
 
 <details>
 <summary>Explanation</summary>
 
 There are a few constraints when using the `completion` field type.
-For example it's a prefix based search that requires the match to start with the same search term
+A `suggest` query using a `completion` field, is a prefix based search that requires the match to start with the same search term.
 
-A search term of "star" will find "star wars" or "star trek" but not "a star is born". For shorter texts this is often a good choise, but to suggest terms the text field to not begin with, other implementations have to be used. One way to alleviate this issue is to index the text multiple time with decreasing number of terms.
+A search term of *"star"* will find *"star wars"* or *"star trek"* but not *"a star is born"*. For shorter texts this is often a good choise, but to suggest terms the text field to not begin with, other implementations have to be used. One way to alleviate this issue is to index the text multiple times with decreasing number of terms.
 
 For example given the text *Harry Potter and The Philosopher's Stone*, it can be indexed as:
 
@@ -108,8 +108,7 @@ Philosopher's Stone
 Stone
 ```
 
-Indexing term this way allows to search for inner terms.
+Indexing terms this way allows an infix search that match inner terms. An alternative is to create a custom `analyzer` that supports infix search, for example using an `edge n-gram token filter` (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-edgengram-tokenfilter.html)).
 
-As mentioned earlier one feature that is currently not supported with the `completion` field type is the `highlight` feature.
-On the other hand using the `completion` field type allows to remove duplicates from the search results. Imagine having multiple documents with the same title, e.g. "Harry Potter", this allows to return only unique suggestions.
+As mentioned earlier one feature that is currently not supported with the `completion` field type is the `highlight` feature. On the other hand using the `completion` field type allows to remove duplicates from the search results. Imagine having multiple documents with the same title, e.g. *"Harry Potter"*, this allows to return only unique suggestions.
 </details>
