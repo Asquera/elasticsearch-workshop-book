@@ -96,3 +96,127 @@ curl -X GET 'http://localhost:9200/test_tld_analyzer/_analyze?pretty' -H 'Conten
 Voila, this should output the top level domain `com` as single token.
 
 > Of course this is a somewhat contrived example to demonstrate the analysis process for some structured text data. For this particular example it probably makes more sense to prepare the data differently and only have the final token stored in a keyword field of the index mapping.
+
+
+## Exercise
+
+### File Paths
+
+In this exercise we will have a number of file paths as text input (ignoring Windows vs Linux path separators). A few file path examples
+
+```text
+/User/alice/old-documents/important.pdf
+/User/alice/new-documents/photo.jpeg
+/User/bob/dev-repos/elasticsearch-docker/README.md
+```
+
+✅ Build an analyzer that uses the `path_hierarchy` tokenizer to split the paths
+
+See the [Elasticsearch reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-pathhierarchy-tokenizer.html) for more information.
+
+Is the output what you would expect?
+
+<details>
+<summary>Possible solution</summary>
+
+This mapping uses the `path_hierarchy` tokenizer, create an index with the settings first.
+
+```bash
+curl -X PUT 'http://localhost:9200/test_file_paths' -H 'Content-Type: application/json' -d '{
+  "settings": {
+    "analysis": {
+      "tokenizer": {
+        "filepath_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "/"
+        },
+        "filepath_tokenizer_reversed": {
+          "type": "path_hierarchy",
+          "delimiter": "/",
+          "reverse": true
+        }
+      }
+    }
+  }
+}'
+```
+
+To check the tokenizer we are using the Analyze API, first the `filepath_tokenizer`.
+
+```bash
+curl -X POST 'http://localhost:9200/test_file_paths/_analyze?pretty=true' -H 'Content-Type: application/json' -d '{
+  "tokenizer": "filepath_tokenizer",
+  "text": "/User/bob/dev-repos/elasticsearch-docker/README.md"
+}'
+```
+
+Then the `filepath_tokenizer_reversed` tokenizer.
+
+```bash
+curl -X POST 'http://localhost:9200/test_file_paths/_analyze?pretty=true' -H 'Content-Type: application/json' -d '{
+  "tokenizer": "filepath_tokenizer_reversed",
+  "text": "/User/bob/dev-repos/elasticsearch-docker/README.md"
+}'
+```
+</details>
+
+In order to provide reasonable results, an index mapping could index the same field containing file paths using multi fields with different analyzers.
+
+<details>
+<summary>Complete with Mapping</summary>
+
+Given the above mapping from the previous exercise using `path_hierarchy` tokenizers, there are two analyzers with different directions.
+
+```bash
+curl -X PUT 'http://localhost:9200/test_file_paths' -H 'Content-Type: application/json' -d '{
+  "settings": {
+    "analysis": {
+      "tokenizer": {
+        "filepath_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "/"
+        },
+        "filepath_tokenizer_reversed": {
+          "type": "path_hierarchy",
+          "delimiter": "/",
+          "reverse": true
+        }
+      },
+      "analyzer": {
+        "filepath_analyzer": {
+          "tokenizer": "filepath_tokenizer",
+          "filter": ["lowercase"]
+        },
+        "filepath_analyzer_reversed": {
+          "tokenizer": "filepath_tokenizer_reversed",
+          "filter": ["lowercase"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "filepath": {
+        "type": "text",
+        "analyzer": "filepath_analyzer",
+        "fields": {
+          "reverse": {
+            "type": "text",
+            "analyzer": "filepath_analyzer_reversed"
+          }
+        }
+      }
+    }
+  }
+}'
+```
+
+Then we can check the generated tokens for fields `filepath` and `filepath.reversed` to see that the analyzers work as intended.
+
+```bash
+curl -X POST 'http://localhost:9200/test_file_paths/_analyze?pretty=true' -H 'Content-Type: application/json' -d '{
+  "field": "filepath",
+  "text": "/User/bob/dev-repos/elasticsearch-docker/README.md"
+}'
+```
+</details>
