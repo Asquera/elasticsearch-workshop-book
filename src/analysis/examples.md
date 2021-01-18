@@ -110,11 +110,15 @@ In this exercise we will have a number of file paths as text input (ignoring Win
 /User/bob/dev-repos/elasticsearch-docker/README.md
 ```
 
-✅ Build an analyzer that uses the `path_hierarchy` tokenizer to split the paths
+✅ Specifiy a `path_hierarchy` tokenizer in the `settings` block of the index and test it with the Analyze API
 
 See the [Elasticsearch reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-pathhierarchy-tokenizer.html) for more information.
 
 Is the output what you would expect?
+
+✅ Use the same `path_hierarchy` tokenizer and use the `reverse` field
+
+How is the output of this tokenizer different from the previous one? What is the differenece?
 
 <details>
 <summary>Possible solution</summary>
