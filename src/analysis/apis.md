@@ -25,6 +25,8 @@ The [Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/curren
 
 For example to test the output of the `standard` analyzer via **curl** the general `/_analyze` endpoint can be used.
 
+✅ Run the following query against the Analyze API.
+
 ```bash
 curl -X GET "localhost:9200/_analyze?pretty" -H 'Content-Type: application/json' -d '{
   "analyzer" : "standard",
@@ -91,4 +93,55 @@ There is more information returned, e.g. offsets, position, the complete output 
     }
   ]
 }
+```
+
+
+## Cat APIs
+
+Elasticsearch offers a list of API endpoints to return **compact** and **aligned text** (CAT) formatted output. Here is a list of a few endpoints that help to get information on cluster, nodes, indices, aliases etc.
+
+See [cat health API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-health.html) documentation.
+
+✅ Display the health of the Elasticsearch cluster
+
+```bash
+curl -X GET 'http://localhost:9200/_cat/health?v'
+```
+
+<hr>
+
+See [cat nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-nodes.html) documentation.
+
+✅ List all nodes in the Elasticsearch cluster
+
+```bash
+curl -X GET 'http://localhost:9200/_cat/nodes?v'
+```
+
+This command outputs the list of all available nodes with some basic metrics on heap, memory, cpu, load.
+
+<hr>
+
+See [cat indices API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html) documentation.
+
+✅ List all indices from all nodes
+
+```bash
+curl -X GET 'http://localhost:9200/_cat/indices?v'
+```
+
+or to output information for a specific inddex
+
+```bash
+curl -X GET 'http://localhost:9200/_cat/indices/<index>?v'
+```
+
+<hr>
+
+See [cat shards API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-shards.html)
+
+✅ List all shards of all indices
+
+```bash
+curl -X GET 'http://localhost:9200/_cat/shards?v'
 ```
