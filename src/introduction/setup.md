@@ -2,7 +2,7 @@
 
 In order to follow the examples in this book it is recommended to run an Elasticsearch instance. Nearly all examples only require a single instance. There are multiple ways to set up an environment.
 
-> All examples are tested with Elasticsearch 7.8.1. Using an earler or newer version should most likely work fine.
+> All examples are tested with Elasticsearch 7.8.1. Using an earlier or newer version should most likely work fine.
 
 ## Docker Compose (recommended)
 
