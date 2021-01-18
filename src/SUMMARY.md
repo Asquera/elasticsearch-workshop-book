@@ -6,6 +6,7 @@
 --------------------------------------------------------------------------
 - [Analysis](./analysis/README.md)
   - [Useful APIs](./analysis/apis.md)
+  - [Anatomy of an Analyzer](./analysis/anatomy.md)
 - [Search](./queries/README.md)
   - [Introduction](./queries/introduction.md)
   - [Scoring](./queries/scoring.md)
