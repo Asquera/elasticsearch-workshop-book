@@ -4,11 +4,11 @@ Elasticsearch provides a long list of built-in analyzers (see [documentation](ht
 
 The function of an analyzer is to analyze the incoming text, split it, transform it and index it.
 
-In case the existing analyzers are insufficient a custom analyzer can be defined. This `custom` analyzer consists of the following components:
+In case the existing analyzers are insufficient a **custom** analyzer can be defined (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-custom-analyzer.html)). This custom analyzer consists of the following components:
 
-* `0` or more character filters ([reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-charfilters.html))
-* one tokenizer ([reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenizers.html))
-* `0` or more token filters ([reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenfilters.html))
+* `0` or more **character filters** ([reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-charfilters.html))
+* one **tokenizer** ([reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenizers.html))
+* `0` or more **token filters** ([reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenfilters.html))
 
 ## Example
 
@@ -195,3 +195,4 @@ this outputs the following list of tokens:
 </details>
 
 > The output contains start, end offsets and positions. These reference the generated tokens with the original text input.
+

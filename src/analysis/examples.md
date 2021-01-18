@@ -1,0 +1,98 @@
+# Analyzer Examples
+
+## Top Level Domain in URL
+
+A custom analyzer can be used to analyze specific structured texts. This example shows how to determine the [top level domain](https://en.wikipedia.org/wiki/Top-level_domain) part of a given URL.
+
+For this example the [pattern_replace](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-pattern-replace-charfilter.html) character filter and the [path_hierarchy](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-pathhierarchy-tokenizer.html) tokenizer are used.
+
+The idea is to strip all characters / tokens which are not part of the domain name, then only pick the last part of the domain which is the top level doman. This may or may not work for all valid URLs, but for the purpose of this example we assume that works well enough.
+
+✅ Create a new index with the given settings
+
+```bash
+curl -X PUT 'http://localhost:9200/test_tld_analyzer' -H 'Content-Type: application/json' -d '{
+  "settings": {
+    "analysis": {
+      "char_filter": {
+        "remove_url_scheme_filter": {
+          "type": "pattern_replace",
+          "pattern": "http(s)://",
+          "replacement": ""
+        },
+        "remove_url_path_filter": {
+          "type": "pattern_replace",
+          "pattern": "(.*)/(.*)",
+          "replacement": "$1"
+        }
+      },
+      "tokenizer": {
+        "tld_tokenizer": {
+          "type": "pattern",
+          "pattern": "^.*\\.([^.]*)$",
+          "group": 1
+        }
+      }
+    }
+  }
+}'
+```
+
+This sets up a new index with the custom analyzer `tld_analyzer`. We use the [Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html) to check the generated tokens, therefore no mapping is provided.
+
+Let's check the different parts of the analyzer. For this we will provide the URL `https://www.example.com/hello_world` for analysis. First let's see what the character filter `remove_url_scheme_filter` does. It uses the `pattern_replace` type that allows to provide a regular pattern in the `pattern` field.
+
+✅ Analyze the URL with the char filter
+
+```bash
+curl -X GET 'http://localhost:9200/test_tld_analyzer/_analyze?pretty' -H 'Content-Type: application/json' -d '{
+  "char_filter": ["remove_url_scheme_filter"],
+  "text": "https://www.example.com/hello_world"
+}'
+```
+
+If everything works fine, this outputs the token `www.example.com/hello_world`, removing the URL scheme `http://`.
+
+Next let's check the next character filter `remove_url_path_filter`.
+
+✅ Analyze the URL with both character filters
+
+```bash
+curl -X GET 'http://localhost:9200/test_tld_analyzer/_analyze?pretty' -H 'Content-Type: application/json' -d '{
+  "char_filter": ["remove_url_scheme_filter", "remove_url_path_filter"],
+  "text": "https://www.example.com/hello_world"
+}'
+```
+
+This should output the token `www.example.com` if successful. The `remove_url_path_filter` char filter removes the path part of the URL.
+
+Remember the analyzer processes the input text stream in the following order: character filters, tokenizer, token filters. Our analyzer needs to specify a tokenizer. The input stream at this point already processed URL scheme and path, the reamining part is the full domain. The tokenizer is of type [pattern](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-pattern-tokenizer.html) that matches the input stream with the regex pattern and if it matches takes the pattern group as output token. The regex pattern should only emit the characters after the last `.` (dot) character.
+
+✅ Analyze the URL with character filters and the tokenizer
+
+```bash
+curl -X GET 'http://localhost:9200/test_tld_analyzer/_analyze?pretty' -H 'Content-Type: application/json' -d '{
+  "char_filter": ["remove_url_scheme_filter", "remove_url_path_filter"],
+  "tokenizer": "tld_tokenizer",
+  "text": "https://www.example.com/hello_world"
+}'
+```
+
+If successful this outputs the following tokens `com`, the token we are looking for, the top level domain `com`.
+
+The last remaining part may be to lower case all URLs to have one representation for the top level domain.
+
+✅ Analyze the URL with all character filters, tokenizers and token filters
+
+```bash
+curl -X GET 'http://localhost:9200/test_tld_analyzer/_analyze?pretty' -H 'Content-Type: application/json' -d '{
+  "char_filter": ["remove_url_scheme_filter", "remove_url_path_filter"],
+  "tokenizer": "tld_tokenizer",
+  "filter": ["lowercase"],
+  "text": "https://www.example.COM/hello_world"
+}'
+```
+
+Voila, this should output the top level domain `com` as single token.
+
+> Of course this is a somewhat contrived example to demonstrate the analysis process for some structured text data. For this particular example it probably makes more sense to prepare the data differently and only have the final token stored in a keyword field of the index mapping.
