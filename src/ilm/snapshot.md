@@ -127,10 +127,13 @@ One way to generate a new snapshot name is to use the Date related functions, se
 For example to generate a new snapshot with on a daily basis is using snapshot name 
 
 ```bash
-curl -H 'Content-Type: application/json' -X PUT "localhost:9200/_snapshot/logstash_backup_repository/logstash-{now/d}?wait_for_completion=true&pretty"
+# without URL parameter encoding
+curl -H 'Content-Type: application/json' -X PUT 'localhost:9200/_snapshot/logstash_backup_repository/<logstash-{now/d}>?wait_for_completion=true&pretty'
+# with URL parameter encoding
+curl -H 'Content-Type: application/json' -X PUT 'localhost:9200/_snapshot/logstash_backup_repository/%3Clogstash-%7Bnow%2Fd%7D%3E?wait_for_completion=true&pretty'
 ```
 
-where path `/_snapshot/logstash_backup_repository/logstash-{now/d}` contains the snapshot name `logstash-{now/d}` which is replaced with toda's date, for example `logstash-2020.01.20`.
+where path `/_snapshot/logstash_backup_repository/<logstash-{now/d}<` contains the snapshot name `<logstash-{now/d}>` (enclosed by brackets `<`, `>`) which is replaced with today's date, for example `logstash-2020.01.20`.
 
 
 ### Restore Snapshot
