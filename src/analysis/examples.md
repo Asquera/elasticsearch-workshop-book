@@ -2,7 +2,7 @@
 
 ## Top Level Domain in URL
 
-A custom analyzer can be used to analyze specific structured texts. This example shows how to determine the [top level domain](https://en.wikipedia.org/wiki/Top-level_domain) part of a given URL.
+A custom analyzer can be used to analyze specific structured texts. This example shows how to determine the [top level domain](https://en.wikipedia.org/wiki/Top-level_domain) part of a given URL. For example having the URL "https://www.heise.**de**/preisvergleich" extracts the tld **"de"** from it.
 
 For this example the [pattern_replace](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-pattern-replace-charfilter.html) character filter and the [path_hierarchy](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-pathhierarchy-tokenizer.html) tokenizer are used.
 
