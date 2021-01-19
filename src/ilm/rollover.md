@@ -9,9 +9,11 @@ The idea is that when specific criteria are met a new index is created and the p
 
 ## Setup
 
-This example uses the Elasticsearch Curator to automate the rollover process. The Curator action uses the Rollover Index API (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html)).
+This example uses the Elasticsearch Curator to run the rollover process. The Curator action uses the Rollover Index API (see [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html)).
 
 The Docker Compose environment described in the [Setup](../introduction/setup.md#docker-compose-recommended) chapter, defines three Elasticsearch nodes in the `docker-compose.yml`.
+
+✅ Start the Docker containers
 
 ```bash
 docker-compose up elasticsearch01 curator cerebro
