@@ -102,3 +102,5 @@ docker rm <container-id>
 ## VM
 
 There also ways to set up an Elasticsearch either locally (e.g. Virtual Box, vagrant) or remotely at a cloud provider. This may require manual installation of Elasticsearch, but the principle is similar.
+
+Then follow [these installation steps](https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html) to install Elasticsearch with a Debian Package.

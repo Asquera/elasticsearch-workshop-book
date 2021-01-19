@@ -33,17 +33,48 @@ The `pattern` filter type allows to find indices that match the given string pat
 
 Follow these steps to run the excercise
 
-* ✅ start Elasticsearch
-* ✅ create at least 3 daily indices with a date based suffix, e.g. `logstash-2021.01.05`, `logstash-2021.01.04`, etc., in order to see the effect it's recommended to use current dates (see the [Create Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html))
-* ✅ create a `config.yml` (see [Configuration section](curator.html#configuration))
-* ✅ create a `action.yml` that uses the [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action to delete indices older than `2` days
-* ✅ run `curator` command line tool with `--dry-mode`, check the output for actions
-* ✅ run `curator` command to delete older indices
+✅ Start Elasticsearch
+
+To make this example visible, first we create at least 3 daily indices with a date based suffix, e.g. `logstash-2021.01.05`, `logstash-2021.01.04`, using the [Create Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html).
+
+✅ Create three `logstash-*` prefixed indices with daily dates
+
+```bash
+# curl -X PUT 'http://localhost:9200/<logstash-{now/d-2d}>'
+curl -X PUT 'http://localhost:9200/%3Clogstash-%7Bnow%2Fd-2d%7D%3E'
+# curl -X PUT 'http://localhost:9200/<logstash-{now/d-1d}>'
+curl -X PUT 'http://localhost:9200/%3Clogstash-%7Bnow%2Fd-1d%7D%3E'
+# curl -X PUT 'http://localhost:9200/<logstash-{now/d}>'
+curl -X PUT 'http://localhost:9200/%3Clogstash-%7Bnow%2Fd%7D%3E'
+```
+
+> Elasticsearch supports Date math for index names. For example the index name `/<logstash-{now/d-2d}>` references an index named `logstash-2021.01.17` from two days ago (assuming it's 2021.01.19 when used). The pair of `<`, `>` marks the template part of the index, while the function `{now/d-2d}` creates the `2021.01.19` and subtracts two days from it. The index name has to be URL encoded to conform to the URL format.
+
+✅ Create or check the `config.yml` (see [Configuration section](curator.html#configuration))
+
+Check the [delete_indices](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) action reference in the Curator documentation to see how an `action` configuration looks.
+
+✅ Create an actions file named `delete_indices.yml` that deletes `logstash-*` prefixed indices that are older than `2` days
+
+Once both config and action files are created, let's run the curator in dry mode
+
+✅ Run the `curator` on the command line `--dry-mode`
+
+```bash
+curator --dry-run --config config.yml delete_indices.yml
+```
+
+Check the output of this command, what does it do?
+
+✅ Run `curator` command to delete older indices
+
+```bash
+curator --config config.yml delete_indices.yml
+```
 
 When successful, there should only be two indices starting with the same suffix, e.g. `logstash-*`, older indices should have been deleted.
 
 > Depending on your chosen values in the **age** filter type no indices may have been deleted. What is the difference between `source: creation_date` and `source: timestring`?
-
 
 Here is a version of the `action.yml` to delete older indices.
 
