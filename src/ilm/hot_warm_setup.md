@@ -10,7 +10,7 @@ A hot / warm architecture requires the use of [Rack / Shard Allocation Awareness
 The Docker Compose environment described in the [Setup](../introduction/setup.md#docker-compose-recommended) chapter, defines three Elasticsearch nodes in the `docker-compose.yml`.
 
 ```bash
-docker-compose up elasticsearch01
+docker-compose up elasticsearch01 elasticsearch02 elasticsearch03 cerebro
 ```
 
 Once all containers started, check the Elasticsearch cluster via [Cerebro](http://localhost:9000/#/overview?host=http:%2F%2Felasticsearch01:9200).
